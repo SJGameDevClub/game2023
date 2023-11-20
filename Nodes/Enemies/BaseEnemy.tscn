@@ -1,0 +1,80 @@
+[gd_scene load_steps=9 format=3 uid="uid://cnwkoshoaqg33"]
+
+[ext_resource type="Script" path="res://Scripts/Enemies/BaseEnemy.cs" id="1_5rh5c"]
+[ext_resource type="Texture2D" uid="uid://71fvjhs1vjwj" path="res://External Assets/Sunny-land/Graphical Assets/spritesheets/cherry.png" id="2_h8bwx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rc6px"]
+radius = 10.0499
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qfbmc"]
+size = Vector2(264, 55)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5n020"]
+atlas = ExtResource("2_h8bwx")
+region = Rect2(42, 0, 21, 21)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0fvyy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5n020")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_upv8h"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5fp4i"]
+gradient = SubResource("Gradient_upv8h")
+width = 10
+height = 10
+
+[node name="BaseEnemy" type="Node2D"]
+scale = Vector2(3, 3)
+
+[node name="Character" type="CharacterBody2D" parent="."]
+position = Vector2(0.333333, 0)
+collision_layer = 4
+collision_mask = 4
+script = ExtResource("1_5rh5c")
+
+[node name="Hitbox" type="CollisionShape2D" parent="Character"]
+shape = SubResource("CircleShape2D_rc6px")
+
+[node name="Player Detector" type="Area2D" parent="Character"]
+
+[node name="DetectorShape" type="CollisionShape2D" parent="Character/Player Detector"]
+position = Vector2(0, -14)
+shape = SubResource("RectangleShape2D_qfbmc")
+debug_color = Color(0.8727, 0.33621, 0.237424, 0.42)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Character"]
+sprite_frames = SubResource("SpriteFrames_0fvyy")
+
+[node name="Hitbox Checker" type="Area2D" parent="Character"]
+position = Vector2(0.333333, 0)
+collision_layer = 4
+collision_mask = 4
+collision_priority = 3.0
+
+[node name="Hitbox 2" type="CollisionShape2D" parent="Character/Hitbox Checker"]
+shape = SubResource("CircleShape2D_rc6px")
+
+[node name="Patrol 1" type="Node2D" parent="."]
+position = Vector2(-132, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Patrol 1"]
+texture = SubResource("GradientTexture2D_5fp4i")
+
+[node name="Patrol 2" type="Node2D" parent="."]
+position = Vector2(132, 0)
+
+[node name="Sprite2D 2" type="Sprite2D" parent="Patrol 2"]
+texture = SubResource("GradientTexture2D_5fp4i")
+
+[connection signal="area_entered" from="Character/Player Detector" to="Character" method="DetectionEntered"]
+[connection signal="area_exited" from="Character/Player Detector" to="Character" method="DetectionLeft"]

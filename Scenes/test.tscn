@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bu3vfrweyj7bm"]
+
+[ext_resource type="PackedScene" uid="uid://dsmwvookn7jye" path="res://Nodes/Player.tscn" id="1_1rsmv"]
+[ext_resource type="TileSet" uid="uid://caj5hio5newh7" path="res://Tilesets/test_tiles/platformer_art.tres" id="2_tv7qt"]
+[ext_resource type="PackedScene" uid="uid://cnwkoshoaqg33" path="res://Nodes/Enemies/BaseEnemy.tscn" id="3_g0saw"]
+
+[node name="Node2D 2" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_1rsmv")]
+position = Vector2(2, -55)
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("2_tv7qt")
+format = 2
+layer_0/tile_data = PackedInt32Array(65534, 458752, 8, 65535, 458752, 8, 0, 458752, 8, 1, 458752, 8, 2, 458752, 8, 3, 458752, 8, 4, 458752, 8, 5, 458752, 8, 6, 458752, 8, 7, 458752, 8, 8, 458752, 8, 9, 458752, 8, 10, 458752, 8, 11, 458752, 8, 12, 458752, 8, 13, 458752, 8, 14, 458752, 8, 15, 458752, 8, 16, 458752, 8, 17, 458752, 8, 65533, 458752, 8, 65532, 458752, 8, 65531, 458752, 8, 65530, 458752, 8, 65529, 458752, 8, 65528, 458752, 8, 65527, 458752, 8, 65526, 458752, 8, 65525, 458752, 8, 65524, 458752, 8)
+
+[node name="Node2D 2" parent="." instance=ExtResource("3_g0saw")]
+position = Vector2(655, -271)

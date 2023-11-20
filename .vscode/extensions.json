@@ -6,6 +6,7 @@
         "ms-dotnettools.csharp",
         "ms-dotnettools.vscodeintellicode-csharp",
         "visualstudioexptteam.vscodeintellicode",
-        "ms-dotnettools.vscode-dotnet-pack"
+        "ms-dotnettools.vscode-dotnet-pack",
+        "editorconfig.editorconfig"
     ]
 }
