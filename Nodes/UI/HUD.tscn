@@ -1,0 +1,82 @@
+[gd_scene load_steps=8 format=3 uid="uid://chpwprolkntjy"]
+
+[ext_resource type="Script" path="res://Scripts/UI/HUD.cs" id="1_fcihi"]
+[ext_resource type="Texture2D" uid="uid://djpvigbj6qc07" path="res://Assets/UI/HUD_info_bg.png" id="1_hklj3"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1qkb2"]
+texture = ExtResource("1_hklj3")
+
+[sub_resource type="Gradient" id="Gradient_o0pcm"]
+offsets = PackedFloat32Array()
+colors = PackedColorArray()
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vvmae"]
+gradient = SubResource("Gradient_o0pcm")
+width = 256
+height = 36
+
+[sub_resource type="Gradient" id="Gradient_vyxpv"]
+offsets = PackedFloat32Array(0, 0.388889, 0.763889)
+colors = PackedColorArray(0.431373, 0, 0, 1, 0.739786, 2.6869e-05, 1.49205e-05, 1, 0.975665, 1.27546e-06, 5.77569e-07, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4x5y7"]
+gradient = SubResource("Gradient_vyxpv")
+width = 256
+height = 36
+
+[node name="HUD" type="CanvasLayer"]
+layer = 0
+script = ExtResource("1_fcihi")
+
+[node name="Control" type="Control" parent="."]
+modulate = Color(1, 1, 1, 0.803922)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 7
+theme_override_constants/margin_bottom = 7
+
+[node name="Control" type="Control" parent="Control/MarginContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Control/MarginContainer/Control"]
+layout_mode = 2
+offset_right = 400.0
+offset_bottom = 120.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxTexture_1qkb2")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/MarginContainer/Control/Panel"]
+layout_mode = 1
+offset_left = 21.0
+offset_top = 13.0
+offset_right = 109.0
+offset_bottom = 49.0
+theme_override_font_sizes/normal_font_size = 27
+text = "Health"
+scroll_active = false
+autowrap_mode = 0
+
+[node name="HealthBar" type="TextureProgressBar" parent="Control/MarginContainer/Control/Panel"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 121.0
+offset_top = 13.0
+offset_right = 377.0
+offset_bottom = 49.0
+texture_under = SubResource("GradientTexture2D_vvmae")
+texture_progress = SubResource("GradientTexture2D_4x5y7")
