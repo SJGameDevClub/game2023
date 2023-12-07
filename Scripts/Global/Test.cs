@@ -18,14 +18,14 @@ public partial class Test : Node {
         if (!run) {return;}
         BaseEnemy _enemy = (BaseEnemy) enemy.Duplicate();
         Node parent = enemy.GetParent();
-        Vector2 pos = enemy.respawnPoint;
-        _enemy.health = 10;
+        Vector2 pos = enemy.respawn_point;
+        _enemy.health = _enemy.max_health;
         SceneTreeTimer t = parent.GetTree().CreateTimer(2, false, true);
         t.Timeout += () => {
             parent.AddChild(_enemy);
             _enemy.Owner = parent;
             _enemy.GlobalPosition = pos;
-            _enemy.respawnPoint = pos;
+            _enemy.respawn_point = pos;
         };
     }
 }

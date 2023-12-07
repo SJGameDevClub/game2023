@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://chpwprolkntjy"]
+[gd_scene load_steps=8 format=3 uid="uid://chpwprolkntjy"]
 
 [ext_resource type="Script" path="res://Scripts/UI/HUD.cs" id="1_fcihi"]
 [ext_resource type="Texture2D" uid="uid://djpvigbj6qc07" path="res://Assets/UI/HUD_info_bg.png" id="1_hklj3"]
 [ext_resource type="PackedScene" uid="uid://ca74y7pfo7egk" path="res://Nodes/UI/Inventory.tscn" id="2_ibinj"]
+[ext_resource type="Texture2D" uid="uid://bm88knle4uugt" path="res://Assets/UI/Health Bar Texture.tres" id="4_51sfh"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1qkb2"]
 texture = ExtResource("1_hklj3")
@@ -16,17 +17,7 @@ gradient = SubResource("Gradient_o0pcm")
 width = 256
 height = 36
 
-[sub_resource type="Gradient" id="Gradient_vyxpv"]
-offsets = PackedFloat32Array(0, 0.388889, 0.763889)
-colors = PackedColorArray(0.431373, 0, 0, 1, 0.739786, 2.6869e-05, 1.49205e-05, 1, 0.975665, 1.27546e-06, 5.77569e-07, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_4x5y7"]
-gradient = SubResource("Gradient_vyxpv")
-width = 256
-height = 36
-
 [node name="HUD" type="CanvasLayer"]
-layer = 0
 script = ExtResource("1_fcihi")
 
 [node name="Control" type="Control" parent="."]
@@ -89,4 +80,4 @@ offset_top = 13.0
 offset_right = 377.0
 offset_bottom = 49.0
 texture_under = SubResource("GradientTexture2D_vvmae")
-texture_progress = SubResource("GradientTexture2D_4x5y7")
+texture_progress = ExtResource("4_51sfh")
