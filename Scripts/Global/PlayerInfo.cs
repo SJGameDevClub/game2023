@@ -1,6 +1,6 @@
 
 public static class PlayerInfo {
-    public static float Health = 100;
+    public static float Health = 100f;
 
 
 }

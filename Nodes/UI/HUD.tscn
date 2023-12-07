@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://chpwprolkntjy"]
+[gd_scene load_steps=9 format=3 uid="uid://chpwprolkntjy"]
 
 [ext_resource type="Script" path="res://Scripts/UI/HUD.cs" id="1_fcihi"]
 [ext_resource type="Texture2D" uid="uid://djpvigbj6qc07" path="res://Assets/UI/HUD_info_bg.png" id="1_hklj3"]
+[ext_resource type="PackedScene" uid="uid://ca74y7pfo7egk" path="res://Nodes/UI/Inventory.tscn" id="2_ibinj"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1qkb2"]
 texture = ExtResource("1_hklj3")
@@ -49,11 +50,20 @@ theme_override_constants/margin_top = 7
 theme_override_constants/margin_right = 7
 theme_override_constants/margin_bottom = 7
 
-[node name="Control" type="Control" parent="Control/MarginContainer"]
+[node name="Inventory" parent="Control/MarginContainer" instance=ExtResource("2_ibinj")]
+unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Control" type="Control" parent="Control/MarginContainer"]
+custom_minimum_size = Vector2(400, 120)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
 
 [node name="Panel" type="Panel" parent="Control/MarginContainer/Control"]
-layout_mode = 2
+layout_mode = 1
 offset_right = 400.0
 offset_bottom = 120.0
 size_flags_horizontal = 0

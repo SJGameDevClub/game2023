@@ -1,0 +1,39 @@
+[gd_resource type="Resource" load_steps=12 format=3 uid="uid://dbu0xlup8jl6p"]
+
+[ext_resource type="Resource" uid="uid://d1sp2i2oh1vxg" path="res://Items/Cherry.tres" id="1_dy5m1"]
+[ext_resource type="Script" path="res://Items/Scripts/Item.cs" id="2_3d4kh"]
+[ext_resource type="Script" path="res://Items/Scripts/CustomStack/Cherry.cs" id="3_o8mkq"]
+[ext_resource type="Resource" uid="uid://b7atxqv56n1si" path="res://Items/GreenGem.tres" id="4_ll8vm"]
+[ext_resource type="Script" path="res://Items/Scripts/ItemStack.cs" id="5_xuaty"]
+[ext_resource type="Script" path="res://Items/Scripts/InventoryResource.cs" id="6_o8oqo"]
+
+[sub_resource type="Resource" id="Resource_7ea75"]
+script = ExtResource("2_3d4kh")
+item = ExtResource("1_dy5m1")
+
+[sub_resource type="Resource" id="Resource_xli6b"]
+script = ExtResource("3_o8mkq")
+item = SubResource("Resource_7ea75")
+count = 5
+display_name = "Cherry"
+
+[sub_resource type="Resource" id="Resource_wvder"]
+script = ExtResource("3_o8mkq")
+item = SubResource("Resource_7ea75")
+count = 15
+display_name = "Cherry"
+
+[sub_resource type="Resource" id="Resource_kc87k"]
+script = ExtResource("2_3d4kh")
+item = ExtResource("4_ll8vm")
+
+[sub_resource type="Resource" id="Resource_jjcw6"]
+script = ExtResource("5_xuaty")
+item = SubResource("Resource_kc87k")
+count = 2
+display_name = "Green Gem"
+
+[resource]
+script = ExtResource("6_o8oqo")
+items = [SubResource("Resource_xli6b"), null, null, SubResource("Resource_wvder"), SubResource("Resource_jjcw6")]
+size = 5

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://b7atxqv56n1si"]
+
+[ext_resource type="Script" path="res://Items/Scripts/Item.gd" id="1_7j166"]
+[ext_resource type="Texture2D" uid="uid://6qdvgyar50dj" path="res://External Assets/Kenney Platformer Art/Main/Items/gemGreen.png" id="2_spkc0"]
+
+[resource]
+script = ExtResource("1_7j166")
+name = "Green Gem"
+description = "A Shiny Green Gem"
+id = ""
+max_stack_size = 15
+texture = ExtResource("2_spkc0")

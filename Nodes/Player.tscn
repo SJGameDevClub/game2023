@@ -1,7 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://dsmwvookn7jye"]
+[gd_scene load_steps=25 format=3 uid="uid://dsmwvookn7jye"]
 
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_q5w3d"]
 [ext_resource type="Texture2D" uid="uid://cnxf54ryhb31w" path="res://External Assets/Sunny-land/Graphical Assets/spritesheets/player.png" id="2_uwhro"]
+[ext_resource type="PackedScene" uid="uid://chpwprolkntjy" path="res://Nodes/UI/HUD.tscn" id="3_3slu3"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_83e5g"]
 radius = 22.0
@@ -167,14 +168,18 @@ animations = [{
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 8
-collision_layer = 4
-collision_mask = 4
+collision_layer = 140
+collision_mask = 10
+platform_floor_layers = 4278190082
 script = ExtResource("1_q5w3d")
 metadata/Player = true
 
+[node name="HUD" parent="." instance=ExtResource("3_3slu3")]
+
 [node name="Area2D" type="Area2D" parent="."]
-collision_layer = 65535
-collision_mask = 65535
+position = Vector2(1, 0)
+collision_layer = 12
+collision_mask = 152
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CapsuleShape2D_83e5g")
@@ -186,9 +191,15 @@ shape = SubResource("CapsuleShape2D_0gu3k")
 position = Vector2(4, -17)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_lbnfw")
-animation = &"hurt"
+animation = &"idle"
+frame_progress = 0.364
 
 [node name="Damage CD Holder" type="Node" parent="."]
+
+[node name="Weapon Hitbox" type="RayCast2D" parent="."]
+rotation = -1.5708
+target_position = Vector2(105, 0.000380099)
+collision_mask = 8
 
 [connection signal="area_entered" from="Area2D" to="." method="AreaEntered"]
 [connection signal="area_exited" from="Area2D" to="." method="AreaLeft"]

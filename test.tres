@@ -1,0 +1,20 @@
+[gd_resource type="Resource" load_steps=7 format=3]
+
+[ext_resource type="Resource" path="res://Items/Cherry.tres" id="1_1feb8"]
+[ext_resource type="Script" path="res://Items/Scripts/ItemWrapper.cs" id="2_bdklc"]
+[ext_resource type="Script" path="res://Items/Scripts/ItemStack.cs" id="3_6bdie"]
+[ext_resource type="Script" path="res://Items/Scripts/InventoryResource.cs" id="4_ynr01"]
+
+[sub_resource type="Resource" id="Resource_274b6"]
+script = ExtResource("2_bdklc")
+item = ExtResource("1_1feb8")
+
+[sub_resource type="Resource" id="Resource_v65nh"]
+script = ExtResource("3_6bdie")
+item = SubResource("Resource_274b6")
+count = 1
+
+[resource]
+script = ExtResource("4_ynr01")
+items = [SubResource("Resource_v65nh"), SubResource("Resource_v65nh"), SubResource("Resource_v65nh"), SubResource("Resource_v65nh"), SubResource("Resource_v65nh")]
+size = 5

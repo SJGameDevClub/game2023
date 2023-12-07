@@ -38,14 +38,17 @@ scale = Vector2(3, 3)
 
 [node name="Character" type="CharacterBody2D" parent="."]
 position = Vector2(0.333333, 0)
-collision_layer = 4
-collision_mask = 4
+collision_layer = 8
+collision_mask = 6
+platform_floor_layers = 4278190082
 script = ExtResource("1_5rh5c")
 
 [node name="Hitbox" type="CollisionShape2D" parent="Character"]
 shape = SubResource("CircleShape2D_rc6px")
 
 [node name="Player Detector" type="Area2D" parent="Character"]
+collision_layer = 8
+collision_mask = 4
 
 [node name="DetectorShape" type="CollisionShape2D" parent="Character/Player Detector"]
 position = Vector2(0, -14)
@@ -57,7 +60,7 @@ sprite_frames = SubResource("SpriteFrames_0fvyy")
 
 [node name="Hitbox Checker" type="Area2D" parent="Character"]
 position = Vector2(0.333333, 0)
-collision_layer = 4
+collision_layer = 8
 collision_mask = 4
 collision_priority = 3.0
 

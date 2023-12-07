@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://d1sp2i2oh1vxg"]
+
+[ext_resource type="Script" path="res://Items/Scripts/Item.gd" id="1_wec5h"]
+[ext_resource type="Texture2D" uid="uid://71fvjhs1vjwj" path="res://External Assets/Sunny-land/Graphical Assets/spritesheets/cherry.png" id="2_yowsr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_esk4l"]
+atlas = ExtResource("2_yowsr")
+region = Rect2(63, 0, 21, 22)
+
+[resource]
+script = ExtResource("1_wec5h")
+name = "Cherry"
+description = "A delious treat"
+id = ""
+max_stack_size = 15
+texture = SubResource("AtlasTexture_esk4l")

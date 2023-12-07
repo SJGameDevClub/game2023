@@ -19,6 +19,7 @@ public partial class BaseEnemy : CharacterBody2D {
     public Vector2 respawnPoint;
     public bool playerWithin => this.player != null;
     public Node2D player;
+    public float health = 10;
 
     public override void _Ready() {
         this.respawnPoint = this.GlobalPosition;
@@ -37,12 +38,12 @@ public partial class BaseEnemy : CharacterBody2D {
             velocity.Y += Mathf.Min(velocity.Y + this.gravity * (float) delta, 10);
         }
 
-        var position = this.GlobalPosition;
-    
+        float distanceFromLPP = new Vector2(this.GlobalPosition.X, 0).DistanceTo(new(this.lastPlayerPosition.X, 0));
         if (this.playerWithin) {
-            var playerPos = this.player.GlobalPosition;
-            var direction = ( playerPos - position ).Normalized();
-            if (!(direction.X < 0.185 && direction.X > -0.185)) {
+            Vector2 playerPos = this.player.GlobalPosition;
+            float distance = new Vector2(this.GlobalPosition.X, 0).DistanceTo(new(playerPos.X, 0));
+            Vector2 direction = ( playerPos - this.GlobalPosition ).Normalized();
+            if (distance > 48.2) {
                 velocity.X = (direction.X < 0 ? -1 : 1) * speed;
             }
             Mathf.MoveToward(velocity.X, 0, speed);
@@ -55,6 +56,9 @@ public partial class BaseEnemy : CharacterBody2D {
             // }
             // GD.Print(position.DistanceTo(new Vector2(playerPos.X, position.Y)), " ", direction);
 
+        } else if (this.lastPlayerPosition != Vector2.Zero && distanceFromLPP > 35 ) {
+            Vector2 direction = ( this.lastPlayerPosition - this.GlobalPosition ).Normalized();
+            velocity.X = ( direction.X < 0 ? -1 : 1 ) * speed;
         } else {
             velocity.X = Mathf.MoveToward(velocity.X, 0, speed);
         }
@@ -70,15 +74,22 @@ public partial class BaseEnemy : CharacterBody2D {
 
     public void DetectionEntered(Area2D area) {
         if (area.GetParent().HasMeta("Player")) {
-            GD.Print("Entered");
             this.player = area;
         }
     }
 
     public void DetectionLeft(Area2D area) {
+        this.lastPlayerPosition = this.player.GlobalPosition;
         if (area.GetParent().HasMeta("Player")) {
-            GD.Print("Exited");
             this.player = null;
+        }
+    }
+
+    public void HandleDamage(float amount) {
+        this.health -= amount;
+        if (this.health < 1) {
+            Test.StartEnemyRespawn(this);
+            this.QueueFree();
         }
     }
 
