@@ -45,7 +45,7 @@ public partial class Inventory : PanelContainer {
             node.QueueFree();
         }
         slots.Clear();
-        PackedScene slotScene = ResourceLoader.Load<PackedScene>("res://Nodes/UI/Slot.tscn");
+        PackedScene slotScene = ResourceLoader.Load<PackedScene>("res://Nodes/UI/Components/Slot.tscn");
         for (int i = 0; i < size; ++i) {
             Slot slot = slotScene.Instantiate<Slot>();
             this.slot_container.AddChild(slot);

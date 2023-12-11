@@ -114,8 +114,6 @@ public partial class Slot : PanelContainer {
     }
 
     public override void _GuiInput(InputEvent @event) {
-        base._GuiInput(@event);
-
         if (@event is not InputEventMouseButton input || !@event.IsPressed()) {
             return;
         }

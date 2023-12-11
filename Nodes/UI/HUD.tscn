@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/UI/HUD.cs" id="1_fcihi"]
 [ext_resource type="Texture2D" uid="uid://djpvigbj6qc07" path="res://Assets/UI/HUD_info_bg.png" id="1_hklj3"]
-[ext_resource type="PackedScene" uid="uid://ca74y7pfo7egk" path="res://Nodes/UI/Inventory.tscn" id="2_ibinj"]
+[ext_resource type="PackedScene" uid="uid://ca74y7pfo7egk" path="res://Nodes/UI/Components/Inventory.tscn" id="2_ibinj"]
 [ext_resource type="Texture2D" uid="uid://bm88knle4uugt" path="res://Assets/UI/Health Bar Texture.tres" id="4_51sfh"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1qkb2"]
@@ -18,6 +18,7 @@ width = 256
 height = 36
 
 [node name="HUD" type="CanvasLayer"]
+layer = -1
 script = ExtResource("1_fcihi")
 
 [node name="Control" type="Control" parent="."]

@@ -1,0 +1,229 @@
+[gd_scene load_steps=4 format=3 uid="uid://ckm6qw5q57cak"]
+
+[ext_resource type="Script" path="res://Scripts/UI/Settings.cs" id="1_7wd8u"]
+[ext_resource type="Script" path="res://Scripts/UI/GraphicSettings.cs" id="2_6dq78"]
+[ext_resource type="Script" path="res://Scripts/UI/KeybindSettings.cs" id="2_vbwyp"]
+
+[node name="Settings" type="CanvasLayer"]
+process_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 120
+theme_override_constants/margin_top = 120
+theme_override_constants/margin_right = 120
+theme_override_constants/margin_bottom = 120
+script = ExtResource("1_7wd8u")
+
+[node name="Tabs" type="TabContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/side_margin = 15
+theme_override_font_sizes/font_size = 25
+current_tab = 1
+all_tabs_in_front = true
+use_hidden_tabs_for_min_size = true
+
+[node name="Graphics" type="MarginContainer" parent="MarginContainer/Tabs"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_top = 28
+script = ExtResource("2_6dq78")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/Tabs/Graphics"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_font_sizes/normal_font_size = 40
+text = "Graphics"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Tabs/Graphics"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+
+[node name="Window Mode" type="HBoxContainer" parent="MarginContainer/Tabs/Graphics/VBoxContainer"]
+custom_minimum_size = Vector2(751, 0)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/Tabs/Graphics/VBoxContainer/Window Mode"]
+custom_minimum_size = Vector2(207, 0)
+layout_mode = 2
+text = "Window Mode"
+fit_content = true
+autowrap_mode = 0
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/Tabs/Graphics/VBoxContainer/Window Mode"]
+layout_mode = 2
+theme_override_constants/separation = 175
+
+[node name="Win Mode" type="OptionButton" parent="MarginContainer/Tabs/Graphics/VBoxContainer/Window Mode"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 4
+selected = 0
+fit_to_longest_item = false
+popup/item_0/text = "Windowed"
+popup/item_0/id = 0
+popup/item_1/text = "Borderless Windowed"
+popup/item_1/id = 1
+popup/item_2/text = "Fullscreen"
+popup/item_2/id = 2
+popup/item_3/text = "Borderless Fullscreen"
+popup/item_3/id = 3
+
+[node name="Resolution" type="HBoxContainer" parent="MarginContainer/Tabs/Graphics/VBoxContainer"]
+custom_minimum_size = Vector2(751, 0)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/Tabs/Graphics/VBoxContainer/Resolution"]
+clip_contents = false
+custom_minimum_size = Vector2(207, 0)
+layout_mode = 2
+text = "Resolution"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/Tabs/Graphics/VBoxContainer/Resolution"]
+layout_mode = 2
+theme_override_constants/separation = 175
+
+[node name="Resolution Mode" type="OptionButton" parent="MarginContainer/Tabs/Graphics/VBoxContainer/Resolution"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 4
+selected = 3
+fit_to_longest_item = false
+popup/item_0/text = "360"
+popup/item_0/id = 0
+popup/item_1/text = "480"
+popup/item_1/id = 1
+popup/item_2/text = "720"
+popup/item_2/id = 2
+popup/item_3/text = "1080"
+popup/item_3/id = 3
+
+[node name="Vsync" type="HBoxContainer" parent="MarginContainer/Tabs/Graphics/VBoxContainer"]
+custom_minimum_size = Vector2(751, 0)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/Tabs/Graphics/VBoxContainer/Vsync"]
+clip_contents = false
+custom_minimum_size = Vector2(207, 0)
+layout_mode = 2
+text = "VSync"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/Tabs/Graphics/VBoxContainer/Vsync"]
+layout_mode = 2
+theme_override_constants/separation = 175
+
+[node name="VSync Mode" type="OptionButton" parent="MarginContainer/Tabs/Graphics/VBoxContainer/Vsync"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 3
+selected = 0
+fit_to_longest_item = false
+popup/item_0/text = "Disabled"
+popup/item_0/id = 0
+popup/item_1/text = "Enabled"
+popup/item_1/id = 1
+popup/item_2/text = "Adaptive"
+popup/item_2/id = 2
+
+[node name="Base" type="HBoxContainer" parent="MarginContainer/Tabs/Graphics/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(751, 0)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/Tabs/Graphics/VBoxContainer/Base"]
+clip_contents = false
+custom_minimum_size = Vector2(207, 0)
+layout_mode = 2
+text = "Base"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/Tabs/Graphics/VBoxContainer/Base"]
+layout_mode = 2
+theme_override_constants/separation = 175
+
+[node name="Base" type="OptionButton" parent="MarginContainer/Tabs/Graphics/VBoxContainer/Base"]
+layout_mode = 2
+item_count = 4
+selected = 0
+fit_to_longest_item = false
+popup/item_0/text = "Windowed"
+popup/item_0/id = 0
+popup/item_1/text = "Borderless Windowed"
+popup/item_1/id = 1
+popup/item_2/text = "Fullscreen"
+popup/item_2/id = 2
+popup/item_3/text = "Borderless Fullscreen"
+popup/item_3/id = 3
+
+[node name="Keybinds" type="MarginContainer" parent="MarginContainer/Tabs"]
+layout_mode = 2
+theme_override_constants/margin_top = 28
+script = ExtResource("2_vbwyp")
+
+[node name="Title" type="RichTextLabel" parent="MarginContainer/Tabs/Keybinds"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_font_sizes/normal_font_size = 40
+text = "Keybinds"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="KeybindHolder" type="VBoxContainer" parent="MarginContainer/Tabs/Keybinds"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="Save" type="Button" parent="MarginContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Save"
+
+[node name="Cancel" type="Button" parent="MarginContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Cancel"
+
+[connection signal="item_selected" from="MarginContainer/Tabs/Graphics/VBoxContainer/Window Mode/Win Mode" to="MarginContainer/Tabs/Graphics" method="windowModeSelected"]
+[connection signal="item_selected" from="MarginContainer/Tabs/Graphics/VBoxContainer/Resolution/Resolution Mode" to="MarginContainer/Tabs/Graphics" method="resolutionSelected"]
+[connection signal="item_selected" from="MarginContainer/Tabs/Graphics/VBoxContainer/Vsync/VSync Mode" to="MarginContainer/Tabs/Graphics" method="vsyncSelected"]

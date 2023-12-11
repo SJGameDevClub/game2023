@@ -1,10 +1,10 @@
 [gd_scene load_steps=11 format=3 uid="uid://bu3vfrweyj7bm"]
 
-[ext_resource type="PackedScene" uid="uid://dsmwvookn7jye" path="res://Nodes/Player.tscn" id="1_1rsmv"]
+[ext_resource type="PackedScene" uid="uid://dsmwvookn7jye" path="res://Nodes/Entities/Player.tscn" id="1_1rsmv"]
 [ext_resource type="Script" path="res://Items/Scripts/Item.cs" id="2_3d4kh"]
 [ext_resource type="TileSet" uid="uid://caj5hio5newh7" path="res://Tilesets/test_tiles/platformer_art.tres" id="2_tv7qt"]
-[ext_resource type="PackedScene" uid="uid://cnwkoshoaqg33" path="res://Nodes/Enemies/BaseEnemy.tscn" id="3_g0saw"]
-[ext_resource type="PackedScene" uid="uid://de3cm735am46u" path="res://Nodes/Pickup.tscn" id="4_h3v8o"]
+[ext_resource type="PackedScene" uid="uid://cnwkoshoaqg33" path="res://Nodes/Entities/Enemies/BaseEnemy.tscn" id="3_g0saw"]
+[ext_resource type="PackedScene" uid="uid://de3cm735am46u" path="res://Nodes/Entities/Pickup.tscn" id="4_h3v8o"]
 [ext_resource type="Resource" uid="uid://b7atxqv56n1si" path="res://Items/GreenGem.tres" id="4_ll8vm"]
 [ext_resource type="Script" path="res://Items/Scripts/ItemStack.cs" id="5_xuaty"]
 [ext_resource type="PackedScene" uid="uid://c48tit1bhe50x" path="res://Nodes/Deathplane.tscn" id="8_074f7"]

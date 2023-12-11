@@ -1,14 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://ca74y7pfo7egk"]
 
-[ext_resource type="Script" path="res://Scripts/UI/Inventory.cs" id="1_psic7"]
-[ext_resource type="PackedScene" uid="uid://cgbsgnkb8nn7s" path="res://Nodes/UI/Slot.tscn" id="1_umpl5"]
+[ext_resource type="Script" path="res://Scripts/UI/Components/Inventory.cs" id="1_8ur0t"]
+[ext_resource type="PackedScene" uid="uid://cgbsgnkb8nn7s" path="res://Nodes/UI/Components/Slot.tscn" id="2_hcui5"]
 
 [node name="Inventory" type="PanelContainer"]
 offset_right = 32.0
 offset_bottom = 32.0
-script = ExtResource("1_psic7")
+script = ExtResource("1_8ur0t")
 
-[node name="HoverItem" parent="." instance=ExtResource("1_umpl5")]
+[node name="HoverItem" parent="." instance=ExtResource("2_hcui5")]
 unique_name_in_owner = true
 visible = false
 self_modulate = Color(1, 1, 1, 0)

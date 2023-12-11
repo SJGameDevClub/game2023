@@ -91,6 +91,12 @@ public partial class BaseEnemy : CharacterBody2D {
         }
     }
 
+    public void HitboxAreaEntered(Area2D area) {
+        if (area.HasMeta("InstantDeath")) {
+            this.health = 0f;
+        }
+    }
+
     public void HandleDamage(float amount) {
         this.health -= amount;
         if (this.health < 1) {

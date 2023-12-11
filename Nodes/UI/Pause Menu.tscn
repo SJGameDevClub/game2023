@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=3 uid="uid://b47m0m4c5jm0y"]
+
+[ext_resource type="Script" path="res://Scripts/UI/PauseMenu.cs" id="1_hod3p"]
+
+[node name="Pause Menu" type="CanvasLayer"]
+process_mode = 3
+layer = 2
+
+[node name="PanelContainer 2" type="PanelContainer" parent="."]
+self_modulate = Color(1, 1, 1, 0.521569)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hod3p")
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer 2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer 2/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer 2/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Paused"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Resume" type="Button" parent="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Resume"
+
+[node name="Settings" type="Button" parent="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+
+[node name="Main Menu" type="Button" parent="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Exit to Main Menu"
+
+[node name="Quit" type="Button" parent="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Exit to Desktop"
+
+[connection signal="pressed" from="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer/Resume" to="PanelContainer 2" method="toggle"]
+[connection signal="pressed" from="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer/Settings" to="PanelContainer 2" method="settings"]
+[connection signal="pressed" from="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer/Main Menu" to="PanelContainer 2" method="main_menu"]
+[connection signal="pressed" from="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer/Quit" to="PanelContainer 2" method="quit"]
