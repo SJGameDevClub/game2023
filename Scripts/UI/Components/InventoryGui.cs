@@ -7,7 +7,7 @@ using System.Linq;
 /// <summary>
 /// An interface for the GUI
 /// </summary>
-public partial class Inventory : PanelContainer {
+public partial class InventoryGui : PanelContainer {
 
     protected GridContainer slot_container;
     protected Slot held_item_container;
@@ -156,22 +156,22 @@ public partial class Inventory : PanelContainer {
         return old_size;
     }
 
-    public static Inventory Load(InventoryResource inventory) {
+    public static InventoryGui Load(Inventory inventory) {
         return new() {
-            size = inventory.size,
+            size = inventory.items.Count,
             _items = inventory.items.ToList()
         };
     }
 
-    public static void Load(Inventory store, InventoryResource inventory) {
-        store.size = inventory.size;
+    public static void Load(InventoryGui store, Inventory inventory) {
+        store.size = inventory.items.Count;
         store.setSlots(inventory.items.ToList());
     }
 
-    public static void Save(Inventory inventory, string path) {
+    public static void Save(InventoryGui inventory, string path) {
         var list = inventory.slots.Select(data => data?.getStack());
         var array = new Array<ItemStack>(list);
-        ResourceSaver.Save(new InventoryResource(array, inventory.size), path);
+        ResourceSaver.Save(new Inventory(array), path);
     }
 
 }

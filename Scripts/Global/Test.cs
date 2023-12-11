@@ -9,9 +9,9 @@ public partial class Test : Node {
         run = true;
     }
 
-    public static void LoadPlayerInv(Inventory inventory) {
+    public static void LoadPlayerInv(InventoryGui inventory) {
         if (!run) {return;}
-        Inventory.Load(inventory, ResourceLoader.Load<InventoryResource>("res://TestData/player_inventory.tres"));
+        InventoryGui.Load(inventory, ResourceLoader.Load<Inventory>("res://TestData/player_inventory.tres"));
     }
 
     public static void StartEnemyRespawn(BaseEnemy enemy) {

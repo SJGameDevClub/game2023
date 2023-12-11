@@ -1,39 +1,28 @@
-[gd_resource type="Resource" load_steps=12 format=3 uid="uid://dbu0xlup8jl6p"]
+[gd_resource type="Resource" script_class="Inventory" load_steps=8 format=3 uid="uid://dbu0xlup8jl6p"]
 
+[ext_resource type="Script" path="res://Scripts/Resources/Inventory.cs" id="1_a323g"]
 [ext_resource type="Resource" uid="uid://d1sp2i2oh1vxg" path="res://Items/Cherry.tres" id="1_dy5m1"]
-[ext_resource type="Script" path="res://Items/Scripts/Item.cs" id="2_3d4kh"]
-[ext_resource type="Script" path="res://Items/Scripts/CustomStack/Cherry.cs" id="3_o8mkq"]
-[ext_resource type="Resource" uid="uid://b7atxqv56n1si" path="res://Items/GreenGem.tres" id="4_ll8vm"]
-[ext_resource type="Script" path="res://Items/Scripts/ItemStack.cs" id="5_xuaty"]
-[ext_resource type="Script" path="res://Items/Scripts/InventoryResource.cs" id="6_o8oqo"]
+[ext_resource type="Script" path="res://Scripts/Resources/Items/ItemStack.cs" id="2_a08ga"]
+[ext_resource type="Resource" uid="uid://b7atxqv56n1si" path="res://Items/GreenGem.tres" id="3_eyg4e"]
 
-[sub_resource type="Resource" id="Resource_7ea75"]
-script = ExtResource("2_3d4kh")
+[sub_resource type="Resource" id="Resource_pg1y6"]
+script = ExtResource("2_a08ga")
 item = ExtResource("1_dy5m1")
-
-[sub_resource type="Resource" id="Resource_xli6b"]
-script = ExtResource("3_o8mkq")
-item = SubResource("Resource_7ea75")
 count = 5
-display_name = "Cherry"
+display_name = ""
 
-[sub_resource type="Resource" id="Resource_wvder"]
-script = ExtResource("3_o8mkq")
-item = SubResource("Resource_7ea75")
+[sub_resource type="Resource" id="Resource_ai4ja"]
+script = ExtResource("2_a08ga")
+item = ExtResource("1_dy5m1")
 count = 15
-display_name = "Cherry"
+display_name = ""
 
-[sub_resource type="Resource" id="Resource_kc87k"]
-script = ExtResource("2_3d4kh")
-item = ExtResource("4_ll8vm")
-
-[sub_resource type="Resource" id="Resource_jjcw6"]
-script = ExtResource("5_xuaty")
-item = SubResource("Resource_kc87k")
+[sub_resource type="Resource" id="Resource_p4qjq"]
+script = ExtResource("2_a08ga")
+item = ExtResource("3_eyg4e")
 count = 2
-display_name = "Green Gem"
+display_name = ""
 
 [resource]
-script = ExtResource("6_o8oqo")
-items = [SubResource("Resource_xli6b"), null, null, SubResource("Resource_wvder"), SubResource("Resource_jjcw6")]
-size = 5
+script = ExtResource("1_a323g")
+items = [SubResource("Resource_pg1y6"), null, SubResource("Resource_ai4ja"), null, SubResource("Resource_p4qjq")]

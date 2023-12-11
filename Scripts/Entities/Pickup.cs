@@ -27,6 +27,9 @@ public partial class Pickup : RigidBody2D {
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta) {
+        if (this.stack == null) {
+            this.QueueFree();
+        }
     }
 
     private Pickup() {}

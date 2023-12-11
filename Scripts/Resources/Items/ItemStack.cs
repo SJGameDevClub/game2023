@@ -11,17 +11,27 @@ using System.Reflection;
 /// Implementation Notes: for custom itemstacks with custom id's add a public static field called custom_id with the item's custom id
 /// A empty constructor is required
 /// </remarks>
+[GlobalClass]
 public partial class ItemStack : Resource {
 
     [Export]
     private Item item;
-    [Export]
+
+    public int _count = 1;
+    private string _display_name = "";
+
+    [Export(PropertyHint.Range, "1,1,or_greater")]
     public int count {
-        get;
-        protected set;
-    } = 1;
+        get => _count;
+        protected set => _count = Math.Min(value, item.max_stack_size);
+    }
+
     [Export]
-    public string display_name;
+    public string display_name {
+        get => string.IsNullOrEmpty(_display_name) ? item.name : _display_name;
+        set => _display_name = value;
+    }
+
     [Signal]
     public delegate void on_changeEventHandler();
     private static Dictionary<string, Type> custom_stacks = new();
@@ -128,9 +138,5 @@ public partial class ItemStack : Resource {
 
     public static implicit operator Item(ItemStack stack) {
         return stack.getItem();
-    }
-
-    public static implicit operator ItemStack(Item item) {
-        return fromItem(item);
     }
 }

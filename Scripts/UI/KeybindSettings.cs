@@ -170,6 +170,10 @@ public partial class KeybindSettings : MarginContainer {
         KeybindResource resource = new();
         foreach (string action in actions) {
             resource.vals[action] = InputMap.ActionGetEvents(action + "_temp");
+            InputMap.ActionEraseEvents(action);
+            foreach (var @event in resource.vals[action]) {
+                InputMap.ActionAddEvent(action, @event);
+            }
         }
         string dir = ProjectSettings.GlobalizePath("user://settings");
         if (!Directory.Exists(dir)) {

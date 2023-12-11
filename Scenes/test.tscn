@@ -1,23 +1,18 @@
-[gd_scene load_steps=11 format=3 uid="uid://bu3vfrweyj7bm"]
+[gd_scene load_steps=9 format=3 uid="uid://bu3vfrweyj7bm"]
 
 [ext_resource type="PackedScene" uid="uid://dsmwvookn7jye" path="res://Nodes/Entities/Player.tscn" id="1_1rsmv"]
-[ext_resource type="Script" path="res://Items/Scripts/Item.cs" id="2_3d4kh"]
 [ext_resource type="TileSet" uid="uid://caj5hio5newh7" path="res://Tilesets/test_tiles/platformer_art.tres" id="2_tv7qt"]
 [ext_resource type="PackedScene" uid="uid://cnwkoshoaqg33" path="res://Nodes/Entities/Enemies/BaseEnemy.tscn" id="3_g0saw"]
 [ext_resource type="PackedScene" uid="uid://de3cm735am46u" path="res://Nodes/Entities/Pickup.tscn" id="4_h3v8o"]
 [ext_resource type="Resource" uid="uid://b7atxqv56n1si" path="res://Items/GreenGem.tres" id="4_ll8vm"]
-[ext_resource type="Script" path="res://Items/Scripts/ItemStack.cs" id="5_xuaty"]
+[ext_resource type="Script" path="res://Scripts/Resources/Items/ItemStack.cs" id="6_0r116"]
 [ext_resource type="PackedScene" uid="uid://c48tit1bhe50x" path="res://Nodes/Deathplane.tscn" id="8_074f7"]
 
-[sub_resource type="Resource" id="Resource_kc87k"]
-script = ExtResource("2_3d4kh")
+[sub_resource type="Resource" id="Resource_ufm2u"]
+script = ExtResource("6_0r116")
 item = ExtResource("4_ll8vm")
-
-[sub_resource type="Resource" id="Resource_jjcw6"]
-script = ExtResource("5_xuaty")
-item = SubResource("Resource_kc87k")
 count = 1
-display_name = "Green Gem"
+display_name = ""
 
 [node name="Node2D" type="Node2D"]
 
@@ -34,7 +29,7 @@ position = Vector2(655, -271)
 
 [node name="Pickup" parent="." instance=ExtResource("4_h3v8o")]
 position = Vector2(-563, -38)
-stack = SubResource("Resource_jjcw6")
+stack = SubResource("Resource_ufm2u")
 
 [node name="Deathplane" parent="." instance=ExtResource("8_074f7")]
 position = Vector2(-100, 125)
