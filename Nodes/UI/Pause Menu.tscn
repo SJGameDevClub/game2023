@@ -5,6 +5,7 @@
 [node name="Pause Menu" type="CanvasLayer"]
 process_mode = 3
 layer = 2
+script = ExtResource("1_hod3p")
 
 [node name="PanelContainer 2" type="PanelContainer" parent="."]
 self_modulate = Color(1, 1, 1, 0.521569)
@@ -13,7 +14,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_hod3p")
 
 [node name="PanelContainer" type="PanelContainer" parent="PanelContainer 2"]
 layout_mode = 2
@@ -47,6 +47,10 @@ text = "Resume"
 layout_mode = 2
 text = "Settings"
 
+[node name="Save Menu" type="Button" parent="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Save/Load"
+
 [node name="Main Menu" type="Button" parent="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Exit to Main Menu"
@@ -55,7 +59,8 @@ text = "Exit to Main Menu"
 layout_mode = 2
 text = "Exit to Desktop"
 
-[connection signal="pressed" from="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer/Resume" to="PanelContainer 2" method="toggle"]
-[connection signal="pressed" from="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer/Settings" to="PanelContainer 2" method="settings"]
-[connection signal="pressed" from="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer/Main Menu" to="PanelContainer 2" method="main_menu"]
-[connection signal="pressed" from="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer/Quit" to="PanelContainer 2" method="quit"]
+[connection signal="pressed" from="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer/Resume" to="." method="toggle"]
+[connection signal="pressed" from="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer/Settings" to="." method="settings"]
+[connection signal="pressed" from="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer/Save Menu" to="." method="save_menu"]
+[connection signal="pressed" from="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer/Main Menu" to="." method="main_menu"]
+[connection signal="pressed" from="PanelContainer 2/PanelContainer/MarginContainer/VBoxContainer/Quit" to="." method="quit"]

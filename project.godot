@@ -22,6 +22,7 @@ Settings="*res://Nodes/UI/Settings.tscn"
 PauseMenu="*res://Nodes/UI/Pause Menu.tscn"
 Test="*res://Scripts/Global/Test.cs"
 Global="*res://Scripts/Global/Global.cs"
+Hud="*res://Nodes/UI/HUD.tscn"
 
 [display]
 

@@ -1,8 +1,7 @@
-[gd_scene load_steps=25 format=3 uid="uid://dsmwvookn7jye"]
+[gd_scene load_steps=24 format=3 uid="uid://dsmwvookn7jye"]
 
 [ext_resource type="Script" path="res://Scripts/Entities/Player.cs" id="1_q5w3d"]
 [ext_resource type="Texture2D" uid="uid://cnxf54ryhb31w" path="res://External Assets/Sunny-land/Graphical Assets/spritesheets/player.png" id="2_uwhro"]
-[ext_resource type="PackedScene" uid="uid://chpwprolkntjy" path="res://Nodes/UI/HUD.tscn" id="3_3slu3"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_83e5g"]
 radius = 22.0
@@ -173,8 +172,6 @@ collision_mask = 10
 platform_floor_layers = 4278190082
 script = ExtResource("1_q5w3d")
 metadata/Player = true
-
-[node name="HUD" parent="." instance=ExtResource("3_3slu3")]
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(1, 0)

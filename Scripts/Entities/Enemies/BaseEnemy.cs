@@ -3,19 +3,25 @@ using System;
 
 public partial class BaseEnemy : CharacterBody2D {
     public const float speed = 200.0f;
-    public const float jumpVelocity = -15;
     [Export]
     public float damage = 10;
     [Export]
     public float health = 10;
+    [Export]
     public float max_health = 10;
+    [Export]
+    public float speed_multiplier = 1.0f;
+    [Export]
+    public bool patrol = true;
+    [Export]
+    protected Vector2 point_1;
+    [Export]
+    protected Vector2 point_2;
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
     public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
     protected AnimatedSprite2D sprite;
-    protected Node2D patrol_1;
-    protected Node2D patrol_2;
     protected Area2D player_detection;
     protected TextureProgressBar health_bar; 
     // public Area2D hitbox;
@@ -25,14 +31,31 @@ public partial class BaseEnemy : CharacterBody2D {
     public Node2D player;
 
     public override void _Ready() {
+        Callable.From(() => {
+            var patrol_1 = this.GetNode<Node2D>("Patrol 1");
+            var patrol_2 = this.GetNode<Node2D>("Patrol 2");
+            if (this.point_1 == default) {
+                this.point_1 = patrol_1.GlobalPosition;
+            }
+            if (this.point_2 == default) {
+                this.point_2 = patrol_2.GlobalPosition;
+            }
+            patrol_1.QueueFree();
+            patrol_2.QueueFree();
+        }).CallDeferred();
         this.respawn_point = this.GlobalPosition;
         this.sprite = this.GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-        this.patrol_1 = this.GetNode<Node2D>("../Patrol 1");
-        this.patrol_2 = this.GetNode<Node2D>("../Patrol 2");
         this.player_detection = this.GetNode<Area2D>("Player Detector");
         this.health_bar = this.GetNode<TextureProgressBar>("Health Bar");
         this.GetNode("Hitbox Checker").SetMeta("damage", this.damage);
-        this.health_bar.MaxValue = this.max_health;
+    }
+
+    public override void _Draw() {
+        base._Draw();
+        if (Test.run) {
+            this.DrawRect(new Rect2(ToLocal(this.point_1 - (Vector2.One * 15)), new Vector2(10, 10)), Color.Color8(255, 255, 255));
+            this.DrawRect(new Rect2(ToLocal(this.point_2 - (Vector2.One * 15)), new Vector2(10, 10)), Color.Color8(255, 255, 255));
+        }
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -43,15 +66,19 @@ public partial class BaseEnemy : CharacterBody2D {
             velocity.Y += Mathf.Min(velocity.Y + this.gravity * (float) delta, 10);
         }
 
+        if (PlayerInfo.Health <= 0) {
+            this.last_player_position = Vector2.Zero;
+            this.player = null;
+        }
         float distanceFromLPP = new Vector2(this.GlobalPosition.X, 0).DistanceTo(new(this.last_player_position.X, 0));
         if (this.player_within) {
             Vector2 playerPos = this.player.GlobalPosition;
             float distance = new Vector2(this.GlobalPosition.X, 0).DistanceTo(new(playerPos.X, 0));
             Vector2 direction = ( playerPos - this.GlobalPosition ).Normalized();
             if (distance > 48.2) {
-                velocity.X = (direction.X < 0 ? -1 : 1) * speed;
+                velocity.X = (direction.X < 0 ? -1 : 1) * (speed * speed_multiplier);
             }
-            Mathf.MoveToward(velocity.X, 0, speed);
+            Mathf.MoveToward(velocity.X, 0, speed * this.speed_multiplier);
             // if (position.DistanceTo(new Vector2(playerPos.X, position.Y)) < 45 && this.IsOnFloor()) {
             //     float amount = playerPos.Y - position.Y;
             //     if (amount < 0) {
@@ -63,9 +90,9 @@ public partial class BaseEnemy : CharacterBody2D {
 
         } else if (this.last_player_position != Vector2.Zero && distanceFromLPP > 35 ) {
             Vector2 direction = ( this.last_player_position - this.GlobalPosition ).Normalized();
-            velocity.X = ( direction.X < 0 ? -1 : 1 ) * speed;
+            velocity.X = ( direction.X < 0 ? -1 : 1 ) * (speed * this.speed_multiplier);
         } else {
-            velocity.X = Mathf.MoveToward(velocity.X, 0, speed);
+            velocity.X = Mathf.MoveToward(velocity.X, 0, speed * this.speed_multiplier);
         }
 
         if (velocity.X != 0) {
@@ -75,7 +102,9 @@ public partial class BaseEnemy : CharacterBody2D {
 
         Velocity = velocity;
         this.health_bar.Value = this.health;
-        MoveAndSlide();
+        this.health_bar.MaxValue = this.max_health;
+        this.QueueRedraw();
+        this.MoveAndSlide();
     }
 
     public void DetectionEntered(Area2D area) {
@@ -85,15 +114,17 @@ public partial class BaseEnemy : CharacterBody2D {
     }
 
     public void DetectionLeft(Area2D area) {
-        this.last_player_position = this.player.GlobalPosition;
-        if (area.GetParent().HasMeta("Player")) {
-            this.player = null;
+        if (this.player == null) {
+            return;
         }
+        this.last_player_position = this.player.GlobalPosition;
+        this.player = null;
     }
 
     public void HitboxAreaEntered(Area2D area) {
         if (area.HasMeta("InstantDeath")) {
             this.health = 0f;
+            this.HandleDamage(0);
         }
     }
 
@@ -104,14 +135,5 @@ public partial class BaseEnemy : CharacterBody2D {
             this.QueueFree();
         }
     }
-
-    // public void HitboxEntered(Area2D area) {
-    //     if (area.GetParent().HasMeta("Player")) {
-    //         // var child = ResourceLoader.Load<PackedScene>(this.GetParent().SceneFilePath).Instantiate<Node2D>();
-    //         // child.Position = respawnPoint;
-    //         // this.GetTree().CurrentScene.AddChild(child);
-    //         GD.Print("Hit");
-    //     }
-    // }
 
 }

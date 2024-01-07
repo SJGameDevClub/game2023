@@ -23,7 +23,7 @@ public partial class ConfirmationBox : PanelContainer {
     }
 
     public void selected(bool confirmed) {
-        EmitSignal("on_select", confirmed);
+        EmitSignal(SignalName.on_select, confirmed);
         this.QueueFree();
         timer.Dispose();
         timer = null;

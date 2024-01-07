@@ -22,16 +22,16 @@ public partial class Keybinder : HBoxContainer {
         this.keybind_name = this.GetNode<RichTextLabel>("Keybind Name");
         this.keybind_name.Text = this._name;
         this.shortcut.Pressed += () => {
-            EmitSignal("on_click", this.index, false);
+            EmitSignal(SignalName.on_click, this.index, false);
         };
         this.shortcut_alt.Pressed += () => {
-            EmitSignal("on_click", this.index, true);
+            EmitSignal(SignalName.on_click, this.index, true);
         };
         this.GetNode<Button>("Reset").Pressed += () => {
-            EmitSignal("on_reset");
+            EmitSignal(SignalName.on_reset);
         };
         this.GetNode<Button>("Clear").Pressed += () => {
-            EmitSignal("on_clear");
+            EmitSignal(SignalName.on_clear);
         };
     }
 

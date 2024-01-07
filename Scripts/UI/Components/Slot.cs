@@ -41,7 +41,7 @@ public partial class Slot : PanelContainer {
         this.TooltipText = "";
     }
 
-    public void redraw() {
+    public void update() {
         reset(false);
         if (this.stack == null) {
             return;
@@ -53,11 +53,14 @@ public partial class Slot : PanelContainer {
     }
 
     public void setStack(ItemStack stack) {
+        if (this.stack != null) {
+            this.stack.on_change -= update;
+        }
         this.stack = stack;
-        try {
-            stack.on_change += redraw;
-        } catch (NullReferenceException) {/* Stack is nullable */}
-        redraw();
+        if (stack != null) {
+            stack.on_change += update;
+        }
+        update();
     }
 
     public bool isStackable(ItemStack stack) {
@@ -99,7 +102,7 @@ public partial class Slot : PanelContainer {
             return;
         }
         if (this.stack == null) {
-            this.setStack(stack.takeOne());
+            this.setStack(stack.take(1));
             return;
         }
         stack.takeOne(this.stack);
@@ -117,8 +120,15 @@ public partial class Slot : PanelContainer {
         if (@event is not InputEventMouseButton input || !@event.IsPressed()) {
             return;
         }
-        
+        this.AcceptEvent();
         EmitSignal(SignalName.on_click, this.index, (long) input.ButtonIndex);
+    }
+
+    protected override void Dispose(bool disposing) {
+        if (this.stack != null) {
+            this.stack.on_change -= update;
+        }
+        base.Dispose(disposing);
     }
 
 }

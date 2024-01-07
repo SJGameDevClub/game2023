@@ -17,13 +17,13 @@ public partial class ItemStack : Resource {
     [Export]
     private Item item;
 
-    public int _count = 1;
+    private int _count = 1;
     private string _display_name = "";
 
     [Export(PropertyHint.Range, "1,1,or_greater")]
     public int count {
         get => _count;
-        protected set => _count = Math.Min(value, item.max_stack_size);
+        protected set => this.setCount(value);
     }
 
     [Export]
@@ -34,18 +34,23 @@ public partial class ItemStack : Resource {
 
     [Signal]
     public delegate void on_changeEventHandler();
-    private static Dictionary<string, Type> custom_stacks = new();
+    private static Dictionary<string, StackUser> stack_users = new();
 
-    protected ItemStack(Item item) {
+    public ItemStack(Item item) {
         this.item = item;
         this.display_name = item.name;
     }
 
-    public bool isStackable(Item item) {
-        if (item == null) {
+    protected void setCount(int count) {
+        _count = Math.Min(count, item.max_stack_size);
+        EmitSignal(SignalName.on_change);
+    }
+
+    public bool isStackable(ItemStack stack) {
+        if (stack == null) {
             return false;
         }
-        return item.stackable && this.item.stackable && item.id == this.item.id;
+        return stack.item.stackable && this.item.stackable && stack.item.id == this.item.id && stack.display_name == this.display_name;
     }
 
     public int merge(ItemStack stack) {
@@ -58,7 +63,6 @@ public partial class ItemStack : Resource {
             remainder = result - this.item.max_stack_size;
         }
         this.count = result - remainder;
-        EmitSignal(SignalName.on_change);
         return stack.count = remainder;
     }
 
@@ -69,14 +73,12 @@ public partial class ItemStack : Resource {
     public ItemStack split() {
         ItemStack stack = fromItem(this.item, (int) Math.Ceiling(this.count / 2f));
         this.count = (int) Math.Floor(this.count / 2f);
-        EmitSignal(SignalName.on_change);
         return stack;
     }
 
-    public ItemStack takeOne() {
-        ItemStack stack = fromItem(this.item);
-        this.count--;
-        EmitSignal(SignalName.on_change);
+    public ItemStack take(int amount) {
+        ItemStack stack = fromItem(this.item, amount > this.count ? amount + (this.count - amount) : amount);
+        this.count -= amount;
         return stack;
     }
 
@@ -87,33 +89,30 @@ public partial class ItemStack : Resource {
         
         this.count--;
         stack.count++;
-        EmitSignal(SignalName.on_change);
     }
 
     public static ItemStack fromItem(Item item, int count = 1) {
-        ItemStack stack;
-        if (custom_stacks.ContainsKey(item.id)) {
-            stack = (ItemStack) Activator.CreateInstance(custom_stacks[item.id]);
-        } else {
-            stack = new ItemStack(item);
-        }
-        stack.count = Math.Min(count, item.max_stack_size);
-
-        return stack;
+        return new ItemStack(item) {
+            count = Math.Min(count, item.max_stack_size)
+        };
     }
 
     /// <summary>
     /// Used to check if the item can be used
     /// </summary>
     /// <returns>True if the item can be used</returns>
-    public virtual bool canUse() {
-        return false;
+    public bool canUse() {
+        return stack_users.ContainsKey(this.item.id);
     }
 
     /// <summary>
     /// Run EmitSignal(SignalName.on_change) when the fields are modified
     /// </summary>
-    public virtual void use() {}
+    public void use() {
+        if (this.canUse()) {
+            stack_users[this.item.id].use(this);
+        }
+    }
 
     private ItemStack() {}
 
@@ -122,16 +121,15 @@ public partial class ItemStack : Resource {
     /// * Only ran once at startup
     /// </summary>
     static ItemStack() {
-        foreach (Type type in Assembly.GetAssembly(typeof(ItemStack)).GetTypes()) {
-            if (!type.IsClass || !type.IsSubclassOf(typeof(ItemStack))) {
-                return;
+        foreach (Type type in Assembly.GetAssembly(typeof(StackUser)).GetTypes()) {
+            if (!type.IsClass || !type.IsSubclassOf(typeof(StackUser)) || type.IsAbstract) {
+                continue;
             }
             
-            FieldInfo _id = type.GetField("custom_id", BindingFlags.Static | BindingFlags.Public);
-            if (_id != null) {
-                custom_stacks.Add((string) _id.GetValue(null), type);
-            } else {
-                custom_stacks.Add(Item.id_base + type.Name.ToSnakeCase(), type);
+            StackUser instance = (StackUser) Activator.CreateInstance(type);
+            string[] ids = instance.forIDs();
+            for (int i = 0; i < ids.Length; i++) {
+                stack_users.Add(ids[i], instance);
             }
         }
     }

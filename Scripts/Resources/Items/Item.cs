@@ -13,16 +13,15 @@ public partial class Item : Resource {
     [Export(PropertyHint.MultilineText)]
     public string description = "unknown";
 
-    [Export(hintString: "id")]
     protected string _id = "";
 
     [ExportGroup("Other")]
     [Export]
     public int max_stack_size = BASE_MAX_STACK_SIZE;
 
-    public bool custom_id => !string.IsNullOrEmpty(_id);
     public bool stackable => max_stack_size > 1;
 
+    [Export(hintString: "id")]
     public string id {
         get => string.IsNullOrEmpty(_id) ? id_base + this.name.ToLower().Replace(' ', '_') : _id;
         set => _id = value;

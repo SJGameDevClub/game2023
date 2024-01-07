@@ -8,7 +8,8 @@
 [ext_resource type="Script" path="res://Scripts/Resources/Items/ItemStack.cs" id="6_0r116"]
 [ext_resource type="PackedScene" uid="uid://c48tit1bhe50x" path="res://Nodes/Deathplane.tscn" id="8_074f7"]
 
-[sub_resource type="Resource" id="Resource_ufm2u"]
+[sub_resource type="Resource" id="Resource_baeew"]
+resource_local_to_scene = true
 script = ExtResource("6_0r116")
 item = ExtResource("4_ll8vm")
 count = 1
@@ -29,7 +30,7 @@ position = Vector2(655, -271)
 
 [node name="Pickup" parent="." instance=ExtResource("4_h3v8o")]
 position = Vector2(-563, -38)
-stack = SubResource("Resource_ufm2u")
+stack = SubResource("Resource_baeew")
 
 [node name="Deathplane" parent="." instance=ExtResource("8_074f7")]
 position = Vector2(-100, 125)

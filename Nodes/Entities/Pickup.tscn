@@ -29,4 +29,4 @@ debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="Render" type="Sprite2D" parent="."]
 unique_name_in_owner = true
-hframes = 5
+offset = Vector2(0, -2)

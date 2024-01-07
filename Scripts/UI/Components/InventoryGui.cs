@@ -9,11 +9,14 @@ using System.Linq;
 /// </summary>
 public partial class InventoryGui : PanelContainer {
 
+    protected static PackedScene inventory_gui_scene {get;} = ResourceLoader.Load<PackedScene>("res://Nodes/UI/Components/Inventory.tscn");
+    protected static PackedScene slot_scene {get;} = ResourceLoader.Load<PackedScene>("res://Nodes/UI/Components/Slot.tscn");
     protected GridContainer slot_container;
     protected Slot held_item_container;
     protected List<Slot> slots = new();
     protected List<ItemStack> _items;
     protected ItemStack held_item;
+
     [Export]
     public int size {get; private set;} = 5;
     // Called when the node enters the scene tree for the first time.
@@ -45,10 +48,9 @@ public partial class InventoryGui : PanelContainer {
             node.QueueFree();
         }
         slots.Clear();
-        PackedScene slotScene = ResourceLoader.Load<PackedScene>("res://Nodes/UI/Components/Slot.tscn");
         for (int i = 0; i < size; ++i) {
-            Slot slot = slotScene.Instantiate<Slot>();
-            this.slot_container.AddChild(slot);
+            Slot slot = slot_scene.Instantiate<Slot>();
+            this.slot_container.AddChild(slot, true);
             slot.Owner = slot_container;
             slot.setIndex(i);
             slot.on_click += handleClick;
@@ -109,7 +111,7 @@ public partial class InventoryGui : PanelContainer {
     /// <param name="index">The slot's index</param>
     /// <param name="stack">The item to set</param>
     public void setSlot(int index, ItemStack stack) {
-        slots[index].setStack(stack);
+        this.slots[index].setStack(stack);
     }
 
     /// <summary>
@@ -127,9 +129,10 @@ public partial class InventoryGui : PanelContainer {
 
         for (int i = 0; i < size; ++i) {
             if (i >= items.Count) {
-                break;
+                this.slots[i].setStack(null);
+                continue;
             }
-            slots[i].setStack(items[i]);
+            this.slots[i].setStack((ItemStack) items[i]?.Duplicate());
         }
     }
 
@@ -157,10 +160,9 @@ public partial class InventoryGui : PanelContainer {
     }
 
     public static InventoryGui Load(Inventory inventory) {
-        return new() {
-            size = inventory.items.Count,
-            _items = inventory.items.ToList()
-        };
+        InventoryGui gui = inventory_gui_scene.Instantiate<InventoryGui>();
+        Load(gui, inventory);
+        return gui;
     }
 
     public static void Load(InventoryGui store, Inventory inventory) {
@@ -168,10 +170,10 @@ public partial class InventoryGui : PanelContainer {
         store.setSlots(inventory.items.ToList());
     }
 
-    public static void Save(InventoryGui inventory, string path) {
+    public static Inventory Save(InventoryGui inventory) {
         var list = inventory.slots.Select(data => data?.getStack());
         var array = new Array<ItemStack>(list);
-        ResourceSaver.Save(new Inventory(array), path);
+        return new Inventory(array);
     }
 
 }

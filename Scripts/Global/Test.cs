@@ -9,14 +9,9 @@ public partial class Test : Node {
         run = true;
     }
 
-    public static void LoadPlayerInv(InventoryGui inventory) {
-        if (!run) {return;}
-        InventoryGui.Load(inventory, ResourceLoader.Load<Inventory>("res://TestData/player_inventory.tres"));
-    }
-
     public static void StartEnemyRespawn(BaseEnemy enemy) {
         if (!run) {return;}
-        BaseEnemy _enemy = (BaseEnemy) enemy.Duplicate();
+        BaseEnemy _enemy = ResourceLoader.Load<PackedScene>(enemy.SceneFilePath).Instantiate<BaseEnemy>();
         Node parent = enemy.GetParent();
         Vector2 pos = enemy.respawn_point;
         _enemy.health = _enemy.max_health;

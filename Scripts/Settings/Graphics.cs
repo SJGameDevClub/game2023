@@ -57,7 +57,6 @@ public partial class Graphics : Resource {
         }
         
         setGraphics(_graphics);
-        DisplayServer.WindowSetPosition(graphics.win_position);
 
         return _graphics;
     }
@@ -116,8 +115,10 @@ public partial class Graphics : Resource {
             "\n",
             ( DisplayServer.ScreenGetSize() <= graphics.display_size ? DisplayServer.WindowGetSize() : DisplayServer.WindowGetSizeWithDecorations()) / 2
         ); */
-        if (graphics.defaultPos) {
+        DisplayServer.WindowSetPosition(graphics.win_position);
+        if (graphics.defaultPos || DisplayServer.WindowGetPositionWithDecorations() <= Vector2I.Zero) {
             graphics._win_position = ( DisplayServer.ScreenGetSize() / 2 ) - ( (DisplayServer.ScreenGetSize() <= graphics.display_size ? DisplayServer.WindowGetSize() : DisplayServer.WindowGetSizeWithDecorations()) / 2 );
+            DisplayServer.WindowSetPosition(graphics.win_position);
         }
         setDisplayMode(graphics.window_mode);
         Graphics.graphics = graphics;
@@ -153,11 +154,11 @@ public partial class Graphics : Resource {
     }
 
     public override bool Equals(object obj) {
-        if (obj is not Graphics graphics) {
+        if (obj is not Graphics _graphics) {
             return false;
         }
 
-        return this == graphics;
+        return this == _graphics;
     }
 
 }

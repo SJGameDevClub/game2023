@@ -3,25 +3,34 @@ using System;
 using System.Collections.Generic;
 
 public partial class Player : CharacterBody2D {
+
     [Export]
-    public const float speed = 300.0f;
+    public float speed = 300.0f;
+
     [Export]
-    public const float jumpVelocity = -500.0f;
+    public float jumpVelocity = -1000.0f;
+
     [Export]
     public float damage = 2f;
+
     [Export]
     public int DamageCDMS = 1000;
+
     [Export]
     private int totalJumps = 2;
+
+    [Export]
+    public float totalJumpTimer = .35f;
+    [Export]
+    public Vector2 spawnpoint;
+
     private int jumps = 2;
     // Get the gravity from the project settings to be synced with RigidBody nodes.
     public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
-    public AnimatedSprite2D sprite;
-    public Vector2 spawnpoint;
+    private AnimatedSprite2D sprite;
     private bool inRespawn = false;
     private TileMap tileMap;
     private Node dcdHolder;
-    private HUD hud;
     private RayCast2D attackHitbox;
 
     public override void _Ready() {
@@ -29,15 +38,13 @@ public partial class Player : CharacterBody2D {
         this.sprite.Play("idle");
         this.tileMap = this.GetParent().GetNode<TileMap>("TileMap");
         this.dcdHolder = this.GetNode("Damage CD Holder");
-        this.hud = this.GetNode<HUD>("HUD");
         this.attackHitbox = this.GetNode<RayCast2D>("Weapon Hitbox");
         this.AddChild(new Camera2D());
         spawnpoint = GlobalPosition;
     }
 
     bool draw = false;
-    public static double baseJumpTimer {get;} = .25d;
-    private double jumpTimer = baseJumpTimer;
+    private float jumpTimer = 0f;
     private int counter = -90;
     private List<ulong> attackCD = new();
     public override void _PhysicsProcess(double delta) {
@@ -47,7 +54,7 @@ public partial class Player : CharacterBody2D {
         Vector2 velocity = this.Velocity;
 
         // Add the gravity.
-        if (!IsOnFloor() && (!Input.IsActionPressed("jump") || jumpTimer <= 0)) {
+        if (!IsOnFloor() && (!Input.IsActionPressed("jump") || this.jumpTimer <= 0)) {
             velocity.Y = Mathf.Min(velocity.Y + this.gravity * (float) delta, 2000);
         }
 
@@ -84,20 +91,22 @@ public partial class Player : CharacterBody2D {
         this.PlatformFloorLayers = _layer;
         sprite.FlipH = false;
         this.Modulate = Color.Color8(255, 255, 255, 255);
+        this.CollisionLayer |= 1u << 3;
+        this.GetNode<Area2D>("Area2D").CollisionLayer |= 1u << 3;
         inRespawn = false;
     }
 
     protected void handleJump(ref Vector2 velocity, double delta) {
         if (Input.IsActionPressed("jump")) {
-            jumpTimer = !IsOnFloor() ? jumpTimer - delta : baseJumpTimer;
+            this.jumpTimer = !IsOnFloor() ? this.jumpTimer - (float) delta : this.totalJumpTimer;
         } else {
-            jumpTimer = !IsOnFloor() ? 0 : baseJumpTimer;
+            this.jumpTimer = !IsOnFloor() && this.jumps <= 0 ? 0 : this.totalJumpTimer;
         }
 
         // Handle Jump.
-        if (Input.IsActionJustPressed("jump") && ( jumpTimer >= 0 || this.jumps > 0 )) {
+        if (Input.IsActionJustPressed("jump") && ( this.jumpTimer >= 0 || this.jumps > 0 )) {
             this.sprite.Play("jump");
-            velocity.Y = jumpVelocity;
+            velocity.Y = jumpVelocity * this.totalJumpTimer;
             jumps--;
         }
     }
@@ -197,7 +206,7 @@ public partial class Player : CharacterBody2D {
                 return;
             }
             var timer = new Timer();
-            damageCooldowns.Add(area.GetInstanceId(), timer);
+            this.damageCooldowns.Add(area.GetInstanceId(), timer);
             timer.Autostart = true;
             timer.WaitTime = this.DamageCDMS / 1000f;
             timer.Timeout += () => HandleDamage(area);
@@ -207,11 +216,11 @@ public partial class Player : CharacterBody2D {
         }
         if (area.HasMeta("pickup")) {
             Pickup pickup = area.GetParent<Pickup>();
-            this.hud.player_inventory.addItem(pickup.getStack());
+            HUD.hud.player_inventory.addItem(pickup.getStack());
             pickup.QueueFree();
         }
         if (area.HasMeta("InstantDeath")) {
-            RespawnAnim();
+            this.RespawnAnim();
         }
     }
 
@@ -230,6 +239,7 @@ public partial class Player : CharacterBody2D {
         var tween = CreateTween();
         _layer = this.PlatformFloorLayers;
         this.PlatformFloorLayers = 0;
+        this.GetNode<Area2D>("Area2D").CollisionLayer &= ~(1u << 3);
         sprite.Play("hurt");
         tween.SetParallel();
         tween.TweenProperty(this, "position", new Vector2(this.Position.X, this.Position.Y - 50), 1);

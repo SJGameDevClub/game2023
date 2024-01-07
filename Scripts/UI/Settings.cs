@@ -5,8 +5,7 @@ public partial class Settings : MarginContainer {
     protected static Settings settings;
     private static int last_tab = 0;
     
-    private CanvasItem previous_item;
-    private CanvasLayer previous_ui;
+    private CanvasLayer prev_ui;
     private TabContainer tab_container;
     private Button save_button;
     private Button cancel_button;
@@ -60,27 +59,19 @@ public partial class Settings : MarginContainer {
             return;
         }
         this.Visible = false;
-        if (previous_ui != null) {
-            previous_ui.Visible = true;
-            previous_ui = null;
-        } else if (previous_item != null) {
-            previous_item.Visible = true;
-            previous_item = null;
+        if (prev_ui != null) {
+            prev_ui.Visible = true;
+            prev_ui = null;
         }
         --Utils.ui_open;
     }
 
-    public static void openSettings(CanvasItem item = null) {
+    public static void openSettings(CanvasLayer item = null) {
         settings.Visible = true;
-        settings.previous_item = item;
-        item.Visible = false;
-        ++Utils.ui_open;
-    }
-
-    public static void openSettings(CanvasLayer layer = null) {
-        settings.Visible = true;
-        settings.previous_ui = layer;
-        layer.Visible = false;
+        settings.prev_ui = item;
+        if (item != null) {
+            item.Visible = false;
+        }
         ++Utils.ui_open;
     }
 
