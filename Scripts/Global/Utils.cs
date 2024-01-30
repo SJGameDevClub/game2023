@@ -39,6 +39,7 @@ public static class Utils {
             new_pos = Vector2.Zero;
             player.prev_scenes.Add((prev_scene, player.GlobalPosition));
         }
+        tree.ChangeSceneToPacked(new_scene);
         Action enter = () => {};
         enter = () => {
             tree.CurrentScene.AddChild(player);
