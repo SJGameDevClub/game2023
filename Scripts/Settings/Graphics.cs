@@ -27,23 +27,28 @@ public partial class Graphics : Resource {
 
     [Export]
     public Vector2I display_size = defaultSize;
+
+    [Export]
+    public Vector2I last_win_size {
+        get => _last_win_size == Vector2I.Zero ? this.display_size : _last_win_size;
+        set => _last_win_size = value;
+    }
+    private Vector2I _last_win_size;
     
     [Export]
-    public Vector2I _win_position;
+    private Vector2I _win_position;
     public Vector2I win_position {
         get => _win_position;
-        set => setPosition(value);
+        set {
+            this._win_position = value;
+            defaultPos = false;
+        }
     }
 
     [Export]
     private bool defaultPos = true;
 
-    private void setPosition(Vector2I position) {
-        this._win_position = position;
-        defaultPos = false;
-    }
-
-    public static Graphics load() {
+    public static Graphics load(bool use = true) {
         if (Engine.IsEditorHint()) {
             return new Graphics();
         }
@@ -56,7 +61,10 @@ public partial class Graphics : Resource {
             _graphics = new Graphics();
         }
         
-        setGraphics(_graphics);
+        if (use) {
+            setGraphics(_graphics);
+            DisplayServer.WindowSetSize(_graphics.last_win_size);
+        }
 
         return _graphics;
     }
@@ -116,7 +124,7 @@ public partial class Graphics : Resource {
             ( DisplayServer.ScreenGetSize() <= graphics.display_size ? DisplayServer.WindowGetSize() : DisplayServer.WindowGetSizeWithDecorations()) / 2
         ); */
         DisplayServer.WindowSetPosition(graphics.win_position);
-        if (graphics.defaultPos || DisplayServer.WindowGetPositionWithDecorations() <= Vector2I.Zero) {
+        if (graphics.defaultPos || DisplayServer.WindowGetPosition() <= Vector2I.Zero) {
             graphics._win_position = ( DisplayServer.ScreenGetSize() / 2 ) - ( (DisplayServer.ScreenGetSize() <= graphics.display_size ? DisplayServer.WindowGetSize() : DisplayServer.WindowGetSizeWithDecorations()) / 2 );
             DisplayServer.WindowSetPosition(graphics.win_position);
         }

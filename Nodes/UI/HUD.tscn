@@ -18,7 +18,6 @@ width = 256
 height = 36
 
 [node name="HUD" type="CanvasLayer"]
-layer = -1
 script = ExtResource("1_fcihi")
 
 [node name="Control" type="Control" parent="."]
@@ -82,3 +81,58 @@ offset_right = 377.0
 offset_bottom = 49.0
 texture_under = SubResource("GradientTexture2D_vvmae")
 texture_progress = ExtResource("4_51sfh")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_bottom = 40
+
+[node name="Container" type="VBoxContainer" parent="Control/MarginContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="_Result" type="TextEdit" parent="Control/MarginContainer/MarginContainer/Container"]
+visible = false
+custom_minimum_size = Vector2(600, 250)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Hello World"
+editable = false
+context_menu_enabled = false
+shortcut_keys_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+
+[node name="Panel" type="Panel" parent="Control/MarginContainer/MarginContainer/Container"]
+custom_minimum_size = Vector2(600, 250)
+layout_mode = 2
+
+[node name="Result" type="RichTextLabel" parent="Control/MarginContainer/MarginContainer/Container/Panel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(600, 250)
+layout_mode = 2
+offset_top = 4.0
+offset_right = 600.0
+offset_bottom = 254.0
+mouse_filter = 1
+bbcode_enabled = true
+
+[node name="Command" type="LineEdit" parent="Control/MarginContainer/MarginContainer/Container"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/caret_width = 2
+placeholder_text = "Click Here or press / to type a command"
+shortcut_keys_enabled = false
+caret_blink = true
+caret_mid_grapheme = true
+
+[connection signal="mouse_entered" from="Control/MarginContainer/MarginContainer/Container/Panel" to="." method="result_hover" binds= [true]]
+[connection signal="mouse_exited" from="Control/MarginContainer/MarginContainer/Container/Panel" to="." method="result_hover" binds= [false]]
+[connection signal="focus_entered" from="Control/MarginContainer/MarginContainer/Container/Command" to="." method="set_editing" binds= [true]]
+[connection signal="focus_exited" from="Control/MarginContainer/MarginContainer/Container/Command" to="." method="set_editing" binds= [false]]
+[connection signal="text_changed" from="Control/MarginContainer/MarginContainer/Container/Command" to="." method="cmd_change" binds= [true]]
+[connection signal="text_submitted" from="Control/MarginContainer/MarginContainer/Container/Command" to="." method="on_command"]

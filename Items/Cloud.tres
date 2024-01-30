@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Item" load_steps=5 format=3 uid="uid://6qh2ktgdwld8"]
+
+[ext_resource type="Texture2D" uid="uid://chkni0klm8rlu" path="res://External Assets/Kenney Platformer Art/Main/Items/cloud1.png" id="1_e7e18"]
+[ext_resource type="Script" path="res://Scripts/Resources/Items/Item.cs" id="1_khkd1"]
+[ext_resource type="Texture2D" uid="uid://36d2pg5le4th" path="res://External Assets/Kenney Platformer Art/Main/Items/cloud3.png" id="3_nrq03"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4mdjc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_e7e18")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_nrq03")
+}],
+"loop": true,
+"name": &"item",
+"speed": 2.25
+}]
+
+[resource]
+script = ExtResource("1_khkd1")
+name = "Cloud"
+description = "A Cloud that stores many things"
+max_stack_size = 1
+id = "item.cloud"
+frames = SubResource("SpriteFrames_4mdjc")

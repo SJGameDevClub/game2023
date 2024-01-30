@@ -166,7 +166,7 @@ animations = [{
 }]
 
 [node name="Player" type="CharacterBody2D"]
-z_index = 8
+z_index = 2
 collision_layer = 140
 collision_mask = 10
 platform_floor_layers = 4278190082
@@ -176,7 +176,7 @@ metadata/Player = true
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(1, 0)
 collision_layer = 12
-collision_mask = 152
+collision_mask = 184
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CapsuleShape2D_83e5g")

@@ -1,6 +1,7 @@
 using Godot;
 using System;
 
+[Tool]
 public partial class BaseEnemy : CharacterBody2D {
     public const float speed = 200.0f;
     [Export]
@@ -17,6 +18,8 @@ public partial class BaseEnemy : CharacterBody2D {
     protected Vector2 point_1;
     [Export]
     protected Vector2 point_2;
+    [Export]
+    protected SpriteFrames animations;
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
     public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
@@ -31,20 +34,23 @@ public partial class BaseEnemy : CharacterBody2D {
     public Node2D player;
 
     public override void _Ready() {
-        Callable.From(() => {
-            var patrol_1 = this.GetNode<Node2D>("Patrol 1");
-            var patrol_2 = this.GetNode<Node2D>("Patrol 2");
-            if (this.point_1 == default) {
-                this.point_1 = patrol_1.GlobalPosition;
-            }
-            if (this.point_2 == default) {
-                this.point_2 = patrol_2.GlobalPosition;
-            }
-            patrol_1.QueueFree();
-            patrol_2.QueueFree();
-        }).CallDeferred();
+        if (!Engine.IsEditorHint()) {
+
+            Callable.From(() => {
+                var patrol_1 = this.GetNode<Node2D>("Patrol 1");
+                var patrol_2 = this.GetNode<Node2D>("Patrol 2");
+                if (this.point_1 == default) {
+                    this.point_1 = patrol_1.GlobalPosition;
+                }
+                if (this.point_2 == default) {
+                    this.point_2 = patrol_2.GlobalPosition;
+                }
+                patrol_1.QueueFree();
+                patrol_2.QueueFree();
+            }).CallDeferred();
+        }
         this.respawn_point = this.GlobalPosition;
-        this.sprite = this.GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        this.sprite = this.GetNode<AnimatedSprite2D>("%Render");
         this.player_detection = this.GetNode<Area2D>("Player Detector");
         this.health_bar = this.GetNode<TextureProgressBar>("Health Bar");
         this.GetNode("Hitbox Checker").SetMeta("damage", this.damage);
@@ -58,7 +64,25 @@ public partial class BaseEnemy : CharacterBody2D {
         }
     }
 
+    public override void _Process(double delta) {
+        this.sprite.SpriteFrames = this.animations;
+
+        if (this.Velocity.X != 0) {
+            this.sprite.FlipH = this.Velocity.X < 0;
+            if (this.Velocity.Y == 0) {
+                this.sprite.Play("walk");
+            }
+        }
+        if (!this.sprite.IsPlaying()) {
+            this.sprite.Play("idle");
+        }
+    }
+
     public override void _PhysicsProcess(double delta) {
+        
+        if (Engine.IsEditorHint()) {
+            return;
+        }
         Vector2 velocity = this.Velocity;
 
         // Add the gravity.
@@ -130,6 +154,7 @@ public partial class BaseEnemy : CharacterBody2D {
 
     public void HandleDamage(float amount) {
         this.health -= amount;
+        this.sprite.Play("hurt");
         if (this.health < 1) {
             Test.StartEnemyRespawn(this);
             this.QueueFree();

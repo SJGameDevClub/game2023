@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://bv823rjj6wc3x"]
+
+[ext_resource type="TileSet" uid="uid://caj5hio5newh7" path="res://Tilesets/test_tiles/platformer_art.tres" id="1_2ah73"]
+
+[node name="TileMap" type="TileMap"]
+tile_set = ExtResource("1_2ah73")
+format = 2
+layer_0/name = "Background 1"
+layer_1/name = "Background 2"
+layer_1/z_index = 1
+layer_1/tile_data = PackedInt32Array()
+layer_2/name = "Ground"
+layer_2/z_index = 2
+layer_2/tile_data = PackedInt32Array()
+layer_3/name = "Forground 1"
+layer_3/z_index = 3
+layer_3/tile_data = PackedInt32Array()
+layer_4/name = "Forground 2"
+layer_4/tile_data = PackedInt32Array()

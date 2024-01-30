@@ -1,28 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://cnwkoshoaqg33"]
+[gd_scene load_steps=8 format=3 uid="uid://cnwkoshoaqg33"]
 
 [ext_resource type="Script" path="res://Scripts/Entities/Enemies/BaseEnemy.cs" id="1_5rh5c"]
-[ext_resource type="Texture2D" uid="uid://71fvjhs1vjwj" path="res://External Assets/Sunny-land/Graphical Assets/spritesheets/cherry.png" id="2_h8bwx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rc6px"]
 radius = 10.0499
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qfbmc"]
 size = Vector2(264, 55)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5n020"]
-atlas = ExtResource("2_h8bwx")
-region = Rect2(42, 0, 21, 21)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_0fvyy"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5n020")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
 
 [sub_resource type="Gradient" id="Gradient_iedq3"]
 offsets = PackedFloat32Array(0, 0.369369, 0.763889)
@@ -63,14 +47,15 @@ position = Vector2(0, -14)
 shape = SubResource("RectangleShape2D_qfbmc")
 debug_color = Color(0.8727, 0.33621, 0.237424, 0.42)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_0fvyy")
+[node name="Render" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
 
 [node name="Hitbox Checker" type="Area2D" parent="."]
 position = Vector2(0.333333, 0)
 collision_layer = 24
 collision_mask = 20
 collision_priority = 3.0
+metadata/damage = 10.0
 
 [node name="Hitbox 2" type="CollisionShape2D" parent="Hitbox Checker"]
 shape = SubResource("CircleShape2D_rc6px")

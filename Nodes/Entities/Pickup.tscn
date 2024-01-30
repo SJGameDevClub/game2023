@@ -1,6 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://de3cm735am46u"]
+[gd_scene load_steps=8 format=3 uid="uid://de3cm735am46u"]
 
 [ext_resource type="Script" path="res://Scripts/Entities/Pickup.cs" id="1_xylq0"]
+[ext_resource type="Resource" uid="uid://c1wd24kmcmxc3" path="res://Items/Missing.tres" id="2_4apsn"]
+[ext_resource type="Script" path="res://Scripts/Resources/Items/ItemStack.cs" id="3_jhuuy"]
+[ext_resource type="Texture2D" uid="uid://bmwq3xh4nhvi2" path="res://Assets/missing.png" id="4_3fxv6"]
+
+[sub_resource type="Resource" id="Resource_dxnrv"]
+script = ExtResource("3_jhuuy")
+item = ExtResource("2_4apsn")
+custom_data = {}
+count = 1
+display_name = "unknown"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bmhvs"]
 radius = 16.0
@@ -13,6 +23,7 @@ collision_layer = 0
 collision_mask = 2
 lock_rotation = true
 script = ExtResource("1_xylq0")
+stack = SubResource("Resource_dxnrv")
 
 [node name="CollisionShape2D 2" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_bmhvs")
@@ -22,6 +33,7 @@ debug_color = Color(0, 0.6, 0.701961, 0.419608)
 unique_name_in_owner = true
 collision_layer = 128
 collision_mask = 0
+metadata/pickup = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Character Pickup"]
 shape = SubResource("CircleShape2D_ibt21")
@@ -29,4 +41,4 @@ debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="Render" type="Sprite2D" parent="."]
 unique_name_in_owner = true
-offset = Vector2(0, -2)
+texture = ExtResource("4_3fxv6")

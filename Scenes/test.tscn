@@ -1,37 +1,173 @@
-[gd_scene load_steps=9 format=3 uid="uid://bu3vfrweyj7bm"]
+[gd_scene load_steps=23 format=3 uid="uid://bu3vfrweyj7bm"]
 
 [ext_resource type="PackedScene" uid="uid://dsmwvookn7jye" path="res://Nodes/Entities/Player.tscn" id="1_1rsmv"]
-[ext_resource type="TileSet" uid="uid://caj5hio5newh7" path="res://Tilesets/test_tiles/platformer_art.tres" id="2_tv7qt"]
+[ext_resource type="PackedScene" uid="uid://bv823rjj6wc3x" path="res://Nodes/tile_map.tscn" id="2_n84yp"]
 [ext_resource type="PackedScene" uid="uid://cnwkoshoaqg33" path="res://Nodes/Entities/Enemies/BaseEnemy.tscn" id="3_g0saw"]
+[ext_resource type="Texture2D" uid="uid://71fvjhs1vjwj" path="res://External Assets/Sunny-land/Graphical Assets/spritesheets/cherry.png" id="4_gee6y"]
 [ext_resource type="PackedScene" uid="uid://de3cm735am46u" path="res://Nodes/Entities/Pickup.tscn" id="4_h3v8o"]
-[ext_resource type="Resource" uid="uid://b7atxqv56n1si" path="res://Items/GreenGem.tres" id="4_ll8vm"]
-[ext_resource type="Script" path="res://Scripts/Resources/Items/ItemStack.cs" id="6_0r116"]
+[ext_resource type="Resource" uid="uid://d1sp2i2oh1vxg" path="res://Items/Cherry.tres" id="5_8pg1b"]
+[ext_resource type="Script" path="res://Scripts/Resources/Items/ItemStack.cs" id="6_tjk6k"]
 [ext_resource type="PackedScene" uid="uid://c48tit1bhe50x" path="res://Nodes/Deathplane.tscn" id="8_074f7"]
+[ext_resource type="PackedScene" uid="uid://binpjr3t8rg4x" path="res://Nodes/Door.tscn" id="10_yib31"]
+[ext_resource type="Texture2D" uid="uid://daws5r4mh5pqe" path="res://External Assets/Kenney Platformer Art/Buildings/Tiles/doorTop.png" id="11_6r8dd"]
+[ext_resource type="Texture2D" uid="uid://dtdmmafm5bk7m" path="res://External Assets/Kenney Platformer Art/Buildings/Tiles/doorKnob.png" id="12_m116l"]
+[ext_resource type="PackedScene" uid="uid://dvdxg4av7thtp" path="res://Scenes/House 1.tscn" id="13_6mw2t"]
 
-[sub_resource type="Resource" id="Resource_baeew"]
-resource_local_to_scene = true
-script = ExtResource("6_0r116")
-item = ExtResource("4_ll8vm")
+[sub_resource type="AtlasTexture" id="AtlasTexture_g8476"]
+atlas = ExtResource("4_gee6y")
+region = Rect2(0, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b6bdk"]
+atlas = ExtResource("4_gee6y")
+region = Rect2(21, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h55qt"]
+atlas = ExtResource("4_gee6y")
+region = Rect2(42, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1vh0r"]
+atlas = ExtResource("4_gee6y")
+region = Rect2(63, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wgqby"]
+atlas = ExtResource("4_gee6y")
+region = Rect2(84, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b2sa0"]
+atlas = ExtResource("4_gee6y")
+region = Rect2(63, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4okrl"]
+atlas = ExtResource("4_gee6y")
+region = Rect2(42, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ttrhq"]
+atlas = ExtResource("4_gee6y")
+region = Rect2(21, 0, 21, 21)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bet8u"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g8476")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b6bdk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h55qt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1vh0r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wgqby")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b2sa0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4okrl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ttrhq")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g8476")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b6bdk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h55qt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1vh0r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wgqby")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b2sa0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4okrl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ttrhq")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g8476")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b6bdk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h55qt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1vh0r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wgqby")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b2sa0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4okrl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ttrhq")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="Resource" id="Resource_vwxo2"]
+script = ExtResource("6_tjk6k")
+item = ExtResource("5_8pg1b")
+custom_data = {}
 count = 1
-display_name = ""
+display_name = "Cherry"
 
 [node name="Node2D" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_1rsmv")]
 position = Vector2(2, -55)
 
-[node name="TileMap" type="TileMap" parent="."]
-tile_set = ExtResource("2_tv7qt")
-format = 2
-layer_0/tile_data = PackedInt32Array(65534, 458752, 8, 65535, 458752, 8, 0, 458752, 8, 1, 458752, 8, 2, 458752, 8, 3, 458752, 8, 4, 458752, 8, 5, 458752, 8, 6, 458752, 8, 7, 458752, 8, 8, 458752, 8, 9, 458752, 8, 10, 458752, 8, 11, 458752, 8, 12, 458752, 8, 13, 458752, 8, 14, 458752, 8, 15, 458752, 8, 16, 458752, 8, 17, 458752, 8, 65533, 458752, 8, 65532, 458752, 8, 65531, 458752, 8, 65530, 458752, 8, 65529, 458752, 8, 65528, 458752, 8, 65527, 458752, 8, 65526, 458752, 8, 65525, 458752, 8, 65524, 458752, 8)
+[node name="TileMap" parent="." instance=ExtResource("2_n84yp")]
+layer_1/y_sort_origin = 1
+layer_1/tile_data = PackedInt32Array(65534, 458752, 8, 65535, 458752, 8, 0, 458752, 8, 1, 458752, 8, 2, 458752, 8, 3, 458752, 8, 4, 458752, 8, 5, 458752, 8, 6, 458752, 8, 7, 458752, 8, 8, 458752, 8, 9, 458752, 8, 10, 458752, 8, 11, 458752, 8, 12, 458752, 8, 13, 458752, 8, 14, 458752, 8, 15, 458752, 8, 16, 458752, 8, 17, 458752, 8, 65533, 458752, 8, 65532, 458752, 8, 65531, 458752, 8, 65530, 458752, 8, 65529, 458752, 8, 65528, 458752, 8, 65527, 458752, 8, 65526, 458752, 8, 65525, 458752, 8, 65524, 458752, 8)
 
 [node name="BaseEnemy" parent="." instance=ExtResource("3_g0saw")]
 position = Vector2(655, -271)
-
-[node name="Pickup" parent="." instance=ExtResource("4_h3v8o")]
-position = Vector2(-563, -38)
-stack = SubResource("Resource_baeew")
+animations = SubResource("SpriteFrames_bet8u")
 
 [node name="Deathplane" parent="." instance=ExtResource("8_074f7")]
 position = Vector2(-100, 125)
 scale = Vector2(3.56, 1)
+
+[node name="Pickup 2" parent="." instance=ExtResource("4_h3v8o")]
+position = Vector2(1197, -44)
+scale = Vector2(2, 2)
+render_scale = Vector2(1.5, 1.5)
+scale = Vector2(2, 2)
+stack = SubResource("Resource_vwxo2")
+
+[node name="Door" parent="." instance=ExtResource("10_yib31")]
+position = Vector2(-164, -71)
+top_texture = ExtResource("11_6r8dd")
+bottom_texture = ExtResource("12_m116l")
+scene = ExtResource("13_6mw2t")

@@ -37,8 +37,8 @@ public partial class Global : Node {
     public override void _Notification(int what) {
         base._Notification(what);
         if (what == (int) NotificationWMCloseRequest) {
-            GD.PrintS("Saving Pos");
             Graphics.graphics.win_position = DisplayServer.WindowGetPosition();
+            Graphics.graphics.last_win_size = DisplayServer.WindowGetSize();
             Graphics.save(Graphics.graphics);
         }
     }

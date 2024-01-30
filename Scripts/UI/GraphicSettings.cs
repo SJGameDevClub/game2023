@@ -25,6 +25,7 @@ public partial class GraphicSettings : MarginContainer {
 
     public void windowModeSelected(int index) {
         ConfirmationBox box = confirm_box.Instantiate<ConfirmationBox>();
+        
         Callable.From(() => {
             this.AddChild(box);
             box.Owner = this;

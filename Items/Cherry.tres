@@ -1,16 +1,69 @@
-[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://d1sp2i2oh1vxg"]
+[gd_resource type="Resource" script_class="Item" load_steps=11 format=3 uid="uid://d1sp2i2oh1vxg"]
 
 [ext_resource type="Script" path="res://Scripts/Resources/Items/Item.cs" id="1_vig38"]
 [ext_resource type="Texture2D" uid="uid://71fvjhs1vjwj" path="res://External Assets/Sunny-land/Graphical Assets/spritesheets/cherry.png" id="2_yowsr"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_y8wny"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_0rfgt"]
 atlas = ExtResource("2_yowsr")
-region = Rect2(63, 0, 21, 22)
+region = Rect2(0, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_061e2"]
+atlas = ExtResource("2_yowsr")
+region = Rect2(21, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3a37s"]
+atlas = ExtResource("2_yowsr")
+region = Rect2(42, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_147jt"]
+atlas = ExtResource("2_yowsr")
+region = Rect2(63, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xjsw4"]
+atlas = ExtResource("2_yowsr")
+region = Rect2(84, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3wpqe"]
+atlas = ExtResource("2_yowsr")
+region = Rect2(63, 0, 21, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aehoq"]
+atlas = ExtResource("2_yowsr")
+region = Rect2(42, 0, 21, 21)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gmqrf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0rfgt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_061e2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3a37s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_147jt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xjsw4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3wpqe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aehoq")
+}],
+"loop": true,
+"name": &"item",
+"speed": 8.0
+}]
 
 [resource]
 script = ExtResource("1_vig38")
 name = "Cherry"
 description = "A delicious treat"
-_id = ""
 max_stack_size = 15
-texture = SubResource("AtlasTexture_y8wny")
+id = "item.cherry"
+frames = SubResource("SpriteFrames_gmqrf")

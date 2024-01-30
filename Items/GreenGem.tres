@@ -1,12 +1,23 @@
-[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://b7atxqv56n1si"]
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://b7atxqv56n1si"]
 
 [ext_resource type="Script" path="res://Scripts/Resources/Items/Item.cs" id="1_xvoku"]
 [ext_resource type="Texture2D" uid="uid://6qdvgyar50dj" path="res://External Assets/Kenney Platformer Art/Main/Items/gemGreen.png" id="2_spkc0"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kwhnq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_spkc0")
+}],
+"loop": true,
+"name": &"item",
+"speed": 5.0
+}]
 
 [resource]
 script = ExtResource("1_xvoku")
 name = "Green Gem"
 description = "A Shiny Green Gem"
-_id = ""
 max_stack_size = 15
-texture = ExtResource("2_spkc0")
+id = "item.green_gem"
+frames = SubResource("SpriteFrames_kwhnq")

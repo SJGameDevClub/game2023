@@ -11,7 +11,7 @@ public partial class Test : Node {
 
     public static void StartEnemyRespawn(BaseEnemy enemy) {
         if (!run) {return;}
-        BaseEnemy _enemy = ResourceLoader.Load<PackedScene>(enemy.SceneFilePath).Instantiate<BaseEnemy>();
+        BaseEnemy _enemy = (BaseEnemy) enemy.Duplicate(); //ResourceLoader.Load<PackedScene>(enemy.SceneFilePath).Instantiate<BaseEnemy>();
         Node parent = enemy.GetParent();
         Vector2 pos = enemy.respawn_point;
         _enemy.health = _enemy.max_health;

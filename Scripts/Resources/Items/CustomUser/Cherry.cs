@@ -1,17 +1,18 @@
 using Godot;
 using System;
 
-public class Cherry : StackUser {
+public class Cherry : IStackUser {
 
-    public override string[] forIDs() {
+    public string[] forIDs() {
         return new[] {Item.id_base + "cherry"};
     }
 
-    public override void use(ItemStack stack) {
+    public IStackUser.Result use(ItemStack stack) {
         if (PlayerInfo.Health >= 100) {
-            return;
+            return IStackUser.Result.Continue;
         }
         stack.take(1);
         PlayerInfo.Health = Math.Min(100, PlayerInfo.Health + 10);
+        return IStackUser.Result.Continue;
     }
 }

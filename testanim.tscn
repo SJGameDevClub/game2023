@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://6askn63dcc0x"]
+
+[ext_resource type="Script" path="res://TestAnim.cs" id="1_uf1ok"]
+[ext_resource type="Texture2D" uid="uid://cnxf54ryhb31w" path="res://External Assets/Sunny-land/Graphical Assets/spritesheets/player.png" id="2_iq4pk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4w535"]
+atlas = ExtResource("2_iq4pk")
+region = Rect2(0, 0, 33, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1cklc"]
+atlas = ExtResource("2_iq4pk")
+region = Rect2(33, 0, 33, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_thh86"]
+atlas = ExtResource("2_iq4pk")
+region = Rect2(66, 0, 33, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tp1fy"]
+atlas = ExtResource("2_iq4pk")
+region = Rect2(99, 0, 33, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r54kr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4w535")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1cklc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_thh86")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tp1fy")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 7.0
+}]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_uf1ok")
+anim = SubResource("SpriteFrames_r54kr")

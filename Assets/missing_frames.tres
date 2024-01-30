@@ -1,0 +1,25 @@
+[gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://dvd2fw20ke125"]
+
+[ext_resource type="Texture2D" uid="uid://bmwq3xh4nhvi2" path="res://Assets/missing.png" id="1_46q14"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_46q14")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_46q14")
+}],
+"loop": true,
+"name": &"item",
+"speed": 5.0
+}]

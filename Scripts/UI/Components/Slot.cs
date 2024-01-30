@@ -6,9 +6,12 @@ public partial class Slot : PanelContainer {
     [Signal]
     public delegate void on_clickEventHandler(int index, MouseButton button);
     public int index = 0;
+    public bool is_hover = false;
     private ItemStack stack;
     private TextureRect render;
     private RichTextLabel label;
+    private SpriteFrames frames;
+    private double frame = 0;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready() {
@@ -25,7 +28,29 @@ public partial class Slot : PanelContainer {
         }
         if (this.stack.count <= 0) {
             reset();
+            return;
         }
+        if (this.is_hover) {
+            this.SizeFlagsHorizontal = SizeFlags.ShrinkCenter;
+            this.SizeFlagsVertical = SizeFlags.ShrinkCenter;
+            this.SelfModulate = Color.Color8(255, 255, 255, 0);
+            this.ZIndex = 1;
+            if (this.Visible) {
+                this.GlobalPosition = this.GetGlobalMousePosition() + new Vector2(5, 5);
+            }
+            if (this.stack == null) {
+                this.Visible = false;
+            } else {
+                this.Visible = true;
+            }
+        }
+        int count = frames.GetFrameCount("item");
+        if (this.frame >= count) {
+            this.frame = 0;
+        }
+
+        this.render.Texture = this.frames.GetFrameTexture("item", (int) Math.Floor(this.frame));
+        this.frame += this.frames.GetAnimationSpeed("item") * delta;
     }
 
     public void setIndex(int i) {
@@ -36,6 +61,8 @@ public partial class Slot : PanelContainer {
         if (remove_stack) {
             this.stack = null;
         }
+        this.frame = 0;
+        this.frames = null;
         this.render.Texture = null;
         this.label.Text = "";
         this.TooltipText = "";
@@ -47,9 +74,10 @@ public partial class Slot : PanelContainer {
             return;
         }
         Item item = stack.getItem();
-        this.render.Texture = item.texture;
+        this.frames = item.frames;
         this.label.Text = "x" + stack.count;
         this.TooltipText = $"{stack.display_name}\n{item.description}";
+        this.frame = 0;
     }
 
     public void setStack(ItemStack stack) {
@@ -70,10 +98,12 @@ public partial class Slot : PanelContainer {
         return this.stack.isStackable(stack);
     }
 
-    public int stackItem(ItemStack stack) {
+    public int stackItem(ItemStack stack, bool merge_only = false) {
         if (this.stack == null) {
-            this.setStack(stack);
-            return 0;
+            if (!merge_only) {
+                this.setStack(stack.take(int.MaxValue));
+            }
+            return merge_only ? stack.count : 0;
         }
         if (!this.stack.isStackable(stack)) {
             return stack.count;

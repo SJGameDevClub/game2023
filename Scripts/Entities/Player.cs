@@ -22,7 +22,7 @@ public partial class Player : CharacterBody2D {
     [Export]
     public float totalJumpTimer = .35f;
     [Export]
-    public Vector2 spawnpoint;
+    public Vector2 spawnpoint = Vector2.Zero;
 
     private int jumps = 2;
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -32,6 +32,8 @@ public partial class Player : CharacterBody2D {
     private TileMap tileMap;
     private Node dcdHolder;
     private RayCast2D attackHitbox;
+    private uint _layer;
+    private Dictionary<ulong, Timer> damageCooldowns = new();
 
     public override void _Ready() {
         this.sprite = this.GetNode<AnimatedSprite2D>("AnimatedSprite2D");
@@ -40,7 +42,9 @@ public partial class Player : CharacterBody2D {
         this.dcdHolder = this.GetNode("Damage CD Holder");
         this.attackHitbox = this.GetNode<RayCast2D>("Weapon Hitbox");
         this.AddChild(new Camera2D());
-        spawnpoint = GlobalPosition;
+        if (this.spawnpoint == Vector2.Zero) {
+            this.spawnpoint = GlobalPosition;
+        }
     }
 
     bool draw = false;
@@ -62,9 +66,11 @@ public partial class Player : CharacterBody2D {
             this.jumps = this.totalJumps;
         }
 
-        this.handleAttack();
-        this.handleMovement(ref velocity);
-        this.handleJump(ref velocity, delta);
+        if (!Utils.text_focused) {
+            this.handleAttack();
+            this.handleMovement(ref velocity);
+            this.handleJump(ref velocity, delta);
+        }
 
         if (velocity.Y > 0 && this.sprite.Animation != "jump") {
             this.sprite.Play("jump");
@@ -89,7 +95,7 @@ public partial class Player : CharacterBody2D {
         this.GlobalPosition = spawnpoint;
         PlayerInfo.Health = 100f;
         this.PlatformFloorLayers = _layer;
-        sprite.FlipH = false;
+        this.sprite.FlipH = false;
         this.Modulate = Color.Color8(255, 255, 255, 255);
         this.CollisionLayer |= 1u << 3;
         this.GetNode<Area2D>("Area2D").CollisionLayer |= 1u << 3;
@@ -112,10 +118,10 @@ public partial class Player : CharacterBody2D {
     }
 
     protected void handleMovement(ref Vector2 velocity) {
-        Vector2 direction = Input.GetVector("left", "right", "up", "down");
+        Vector2 direction = Input.GetVector("left", "right", "interact", "down");
         if (direction.X != 0) {
             velocity.X = direction.X * speed * ( this.IsOnFloor() ? 1 : .75f );
-            if (counter == -90) {
+            if (this.counter == -90) {
                 this.sprite.FlipH = direction.X < 0;
             }
             if (velocity.Y == 0) {
@@ -126,6 +132,9 @@ public partial class Player : CharacterBody2D {
             if (velocity.Y == 0) {
                 this.sprite.Play("idle");
             }
+        }
+        if (Input.IsActionJustPressed("interact") && this.door != null) {
+            Utils.EnterArea(this, this.door);
         }
     }
 
@@ -198,8 +207,9 @@ public partial class Player : CharacterBody2D {
         attackable.HandleDamage(this.damage);
     }
 
-    private uint _layer;
-    private Dictionary<ulong, Timer> damageCooldowns = new();
+    private Door door;
+    public List<(PackedScene scene, Vector2 pos)> prev_scenes = new();
+    public PackedScene prev_door_scene = null;
     public void AreaEntered(Area2D area) {
         if (area.HasMeta("damage")) {
             if (!HandleDamage(area)) {
@@ -214,13 +224,23 @@ public partial class Player : CharacterBody2D {
             return;
             // this.damageCooldown.Timeout += this._dc = () => HandleDamage(area);
         }
+
         if (area.HasMeta("pickup")) {
             Pickup pickup = area.GetParent<Pickup>();
             HUD.hud.player_inventory.addItem(pickup.getStack());
             pickup.QueueFree();
         }
+
         if (area.HasMeta("InstantDeath")) {
             this.RespawnAnim();
+        }
+
+        if (area.HasMeta("door")) {
+            this.door = (Door) area;
+            if (this.prev_door_scene != null) {
+                this.door.scene = this.prev_door_scene;
+                this.prev_door_scene = null;
+            }
         }
     }
 
@@ -231,6 +251,9 @@ public partial class Player : CharacterBody2D {
             }
             timer.QueueFree();
         }
+        if (area.HasMeta("door")) {
+            this.door = null;
+        }
     }
     //TODO: Fall from the Sky respawn
     public void RespawnAnim() {
@@ -240,7 +263,7 @@ public partial class Player : CharacterBody2D {
         _layer = this.PlatformFloorLayers;
         this.PlatformFloorLayers = 0;
         this.GetNode<Area2D>("Area2D").CollisionLayer &= ~(1u << 3);
-        sprite.Play("hurt");
+        this.sprite.Play("hurt");
         tween.SetParallel();
         tween.TweenProperty(this, "position", new Vector2(this.Position.X, this.Position.Y - 50), 1);
         tween.TweenProperty(this, "modulate", Color.Color8(255, 255, 255, 0), 1);
