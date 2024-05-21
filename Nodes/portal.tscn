@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://eh81tee8bmof"]
+
+[ext_resource type="Texture2D" uid="uid://1032fuvasdwu" path="res://External Assets/Kenney Simplified Platformer Pack/PNG/Tiles/platformPack_tile011.png" id="1_fjdqi"]
+[ext_resource type="Script" path="res://Scripts/Portal.cs" id="1_lvkbb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_emgrn"]
+radius = 35.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2bgys"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_fjdqi")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Area2D" type="Area2D"]
+script = ExtResource("1_lvkbb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_emgrn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_2bgys")

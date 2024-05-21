@@ -10,3 +10,4 @@ metadata/InstantDeath = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_w4abn")
+debug_color = Color(0.827451, 0.27451, 0.160784, 0.419608)

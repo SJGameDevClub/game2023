@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public partial class Player : CharacterBody2D {
 
     [Export]
-    public float speed = 300.0f;
+    public float speed = 350.0f;
 
     [Export]
     public float jumpVelocity = -1000.0f;
@@ -21,29 +21,43 @@ public partial class Player : CharacterBody2D {
 
     [Export]
     public float totalJumpTimer = .35f;
+
     [Export]
     public Vector2 spawnpoint = Vector2.Zero;
 
+    public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+    public float speed_multiplier = 1f;
+
     private int jumps = 2;
     // Get the gravity from the project settings to be synced with RigidBody nodes.
-    public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
     private AnimatedSprite2D sprite;
     private bool inRespawn = false;
-    private TileMap tileMap;
-    private Node dcdHolder;
-    private RayCast2D attackHitbox;
+    private TileMap tilemap;
+    private Node dcd_holder;
+    private RayCast2D attack_hitbox;
     private uint _layer;
     private Dictionary<ulong, Timer> damageCooldowns = new();
 
     public override void _Ready() {
         this.sprite = this.GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         this.sprite.Play("idle");
-        this.tileMap = this.GetParent().GetNode<TileMap>("TileMap");
-        this.dcdHolder = this.GetNode("Damage CD Holder");
-        this.attackHitbox = this.GetNode<RayCast2D>("Weapon Hitbox");
+        this.tilemap = this.GetTree().CurrentScene.GetNode<TileMap>("TileMap");
+        this.dcd_holder = this.GetNode("Damage CD Holder");
+        this.attack_hitbox = this.GetNode<RayCast2D>("Weapon Hitbox");
         this.AddChild(new Camera2D());
         if (this.spawnpoint == Vector2.Zero) {
             this.spawnpoint = GlobalPosition;
+        }
+    }
+
+    public override void _Process(double delta) {
+        if (inRespawn || this.Owner == null) {
+            return;
+        }
+        try {
+            this.tilemap.GetIndex();
+        } catch (Exception e) when (e is ObjectDisposedException || e is NullReferenceException) {
+            this.tilemap = this.GetTree().CurrentScene.GetNode<TileMap>("TileMap");
         }
     }
 
@@ -51,15 +65,23 @@ public partial class Player : CharacterBody2D {
     private float jumpTimer = 0f;
     private int counter = -90;
     private List<ulong> attackCD = new();
+    private TileData current_water_tile;
     public override void _PhysicsProcess(double delta) {
-        if (inRespawn) {
+        if (inRespawn || this.Owner == null) {
             return;
         }
         Vector2 velocity = this.Velocity;
+        this.current_water_tile = this.tilemap.GetCellTileData(3, this.tilemap.LocalToMap(this.Position));
+        if (this.current_water_tile != null && ( (bool) this.current_water_tile.GetCustomData("liquid") )) {
+            this.speed_multiplier = .6f;
+        } else {
+            this.speed_multiplier = 1;
+        }
+        // GD.PrintS(this.current_water_tile, this.tilemap.LocalToMap(this.Position), this.tilemap.LocalToMap(this.ToLocal(this.GetViewport().GetMousePosition())), this.tilemap.LocalToMap(this.tilemap.ToLocal(this.GetViewport().GetMousePosition())), this.tilemap.LocalToMap(this.tilemap.ToLocal(this.GlobalPosition)));
 
         // Add the gravity.
         if (!IsOnFloor() && (!Input.IsActionPressed("jump") || this.jumpTimer <= 0)) {
-            velocity.Y = Mathf.Min(velocity.Y + this.gravity * (float) delta, 2000);
+            velocity.Y = this.current_water_tile != null && ((bool) this.current_water_tile.GetCustomData("liquid")) ? (this.gravity * (float) delta) * 4.5f * (Input.IsActionPressed("down") ? 2f : 1) : Mathf.Min(velocity.Y + this.gravity * (float) delta, 2000);
         }
 
         if (this.IsOnFloor()) {
@@ -81,7 +103,6 @@ public partial class Player : CharacterBody2D {
         this.MoveAndSlide();
 
         if (PlayerInfo.Health <= 0) {
-            GD.Print("DAETH");
             this.RespawnAnim();
         }
 
@@ -115,6 +136,11 @@ public partial class Player : CharacterBody2D {
             velocity.Y = jumpVelocity * this.totalJumpTimer;
             jumps--;
         }
+
+        if (this.current_water_tile != null && (bool) this.current_water_tile.GetCustomData("liquid")) {
+            this.jumps = this.totalJumps;
+            this.jumpTimer = this.totalJumpTimer;
+        }
     }
 
     protected void handleMovement(ref Vector2 velocity) {
@@ -136,14 +162,16 @@ public partial class Player : CharacterBody2D {
         if (Input.IsActionJustPressed("interact") && this.door != null) {
             Utils.EnterArea(this, this.door);
         }
+
+        velocity.X *= this.speed_multiplier;
     }
 
     protected void handleAttack() {
         bool isAttacking = this.counter != -90 && this.counter != 90 && this.counter != -270;
-        this.attackHitbox.Enabled = isAttacking;
+        this.attack_hitbox.Enabled = isAttacking;
         if (!isAttacking) {
             this.counter = -90;
-            this.attackHitbox.GlobalRotationDegrees = counter;
+            this.attack_hitbox.GlobalRotationDegrees = counter;
             this.attackCD.Clear();
         }
 
@@ -153,7 +181,7 @@ public partial class Player : CharacterBody2D {
             } else {
                 this.counter += 5;
             }
-            this.attackHitbox.GlobalRotationDegrees = Math.Max(Math.Min(counter, 90), -270);
+            this.attack_hitbox.GlobalRotationDegrees = Math.Max(Math.Min(counter, 90), -270);
         }
 
         if (isAttacking) {
@@ -162,13 +190,13 @@ public partial class Player : CharacterBody2D {
             } else {
                 this.counter += 5;
             }
-            this.attackHitbox.GlobalRotationDegrees = Math.Max(Math.Min(counter, 90), -270);
+            this.attack_hitbox.GlobalRotationDegrees = Math.Max(Math.Min(counter, 90), -270);
         }
 
-        if (this.attackHitbox.IsColliding()) {
-            GodotObject collider = this.attackHitbox.GetCollider();
+        if (this.attack_hitbox.IsColliding()) {
+            GodotObject collider = this.attack_hitbox.GetCollider();
             if (collider != null && !this.attackCD.Contains(collider.GetInstanceId())) {
-                AttackBody(this.attackHitbox.GetCollider());
+                AttackBody(this.attack_hitbox.GetCollider());
                 this.attackCD.Add(collider.GetInstanceId());
             }
         }
@@ -179,7 +207,7 @@ public partial class Player : CharacterBody2D {
         if (draw) {
             DrawCircle((GetParent() as Node2D).Position, 50f, Color.Color8(255, 0, 0));
             DrawCircle(Position, 50f, Color.Color8(0, 0, 255));
-            DrawCircle(tileMap.MapToLocal(new(0, 0)), 50f, Color.Color8(0, 255, 0));
+            DrawCircle(tilemap.MapToLocal(new(0, 0)), 50f, Color.Color8(0, 255, 0));
         }
         draw = false;
     }
@@ -220,7 +248,7 @@ public partial class Player : CharacterBody2D {
             timer.Autostart = true;
             timer.WaitTime = this.DamageCDMS / 1000f;
             timer.Timeout += () => HandleDamage(area);
-            this.dcdHolder.AddChild(timer, false, InternalMode.Back);
+            this.dcd_holder.AddChild(timer, false, InternalMode.Back);
             return;
             // this.damageCooldown.Timeout += this._dc = () => HandleDamage(area);
         }

@@ -28,7 +28,6 @@ public static class Utils {
         prev_scene.Pack(tree.CurrentScene);
         PackedScene new_scene = door.scene;
         Vector2 new_pos;
-        Player dplayer = (Player) player.Duplicate((int) (Node.DuplicateFlags.Scripts | Node.DuplicateFlags.Signals | Node.DuplicateFlags.Groups));
         if (new_scene == null) {
             player.prev_door_scene = prev_scene;
             var prev_info = player.prev_scenes[player.prev_scenes.Count - 1];
